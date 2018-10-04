@@ -1,5 +1,3 @@
-# reBay-Backend
-## Stacks
-- Node.js
-- Express.js
-- MongoDB
+# Wave-Backend
+
+It doesn't work now. Because JeeWoo Doesn't work.
