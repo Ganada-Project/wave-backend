@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const style = require('./style');
-// const user = require('./user');
+const test = require('./test');
 const authMiddleware = require('../../middlewares/auth');
 
 // router.use('/auth', auth);
@@ -11,5 +11,6 @@ const authMiddleware = require('../../middlewares/auth');
 
 //router.use('/style', authMiddleware);
 router.use('/style', style);
+router.use('/test', test);
 
 module.exports = router;

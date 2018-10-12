@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const mysql = require('mysql');
 const config = require('./config');
 const conn = mysql.createConnection(config);
+const query = require('./routes/api/common/query');
 
 /* =======================
  LOAD THE CONFIG
@@ -49,7 +50,7 @@ app.use(morgan(':date'), function(req, res, next) {
 app.use(morgan(':status'), function(req, res, next) {
 	next();
 });
-
+query.uploadImage("")
 
 // set the secret key variable for jwt
 app.set('jwt-secret', config.secret);
