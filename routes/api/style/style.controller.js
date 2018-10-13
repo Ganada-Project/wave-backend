@@ -12,9 +12,9 @@ exports.getStyleById = async (req, res) => {
     }
 };
 
-exports.getStyle = async (req, res) => {
+exports.getAllStyles = async (req, res) => {
     try {
-        result = await query.getStyle();
+        result = await query.getAllStyles();
         return res.status(200).json({
             result
         })

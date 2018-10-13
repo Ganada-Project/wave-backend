@@ -18,9 +18,9 @@ exports.getStyleById = (id) => {
     });
 }
 
-exports.getStyle = () => {
+exports.getAllStyles = () => {
     return new Promise((resolve, reject) => {
-        conn.query(`SELECT * FROM Styles`, (err, result) => {
+        conn.query(`SELECT * FROM Style`, (err, result) => {
             if (err) reject(err);
             else resolve(result)
         });
