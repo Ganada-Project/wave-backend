@@ -18,6 +18,15 @@ exports.getStyleById = (id) => {
     });
 }
 
+exports.getStyle = () => {
+    return new Promise((resolve, reject) => {
+        conn.query(`SELECT * FROM Styles`, (err, result) => {
+            if (err) reject(err);
+            else resolve(result)
+        });
+    });
+}
+
 exports.uploadImage = (base64) => {
     return new Promise((resolve, reject)=>{
         const d = new Date();
@@ -30,7 +39,7 @@ exports.uploadImage = (base64) => {
         let buf = new Buffer(base64.replace(/^data:image\/\w+;base64,/, ''), 'base64');
         s3.putObject({
             Bucket: 'wave-bucket-seoul',
-            Key: picKey,
+            Key: picKey,    
             Body: buf,
             ACL: 'public-read'
         }, function (err, response) {
