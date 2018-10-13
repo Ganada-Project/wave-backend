@@ -11,7 +11,7 @@ const crypto = require('crypto');
 
 exports.getStyleById = (id) => {
     return new Promise((resolve, reject) => {
-        conn.query(`SELECT * FROM Styles WHERE id = ${id}`, (err, result) => {
+        conn.query(`SELECT * FROM Style WHERE id = ${id}`, (err, result) => {
             if (err) reject(err);
             else resolve(result[0])
         });
@@ -47,4 +47,57 @@ exports.uploadImage = (base64) => {
             else resolve(response);
         });
     })
+}
+
+exports.getUserByEmail = (email) => {
+    return new Promise((resolve, reject) => {
+        conn.query(`SELECT * FROM User WHERE email = '${email}'`, (err, result) => {
+            if (err) reject(err);
+            else resolve(result[0])
+        });
+    });
+}
+
+exports.createUser = (email,password) => {
+    return new Promise((resolve, reject) => {
+        conn.query('INSERT INTO User(email, password) VALUES(?,?)',
+            [email, password],
+            (err, result) => {
+            if (err) reject(err);
+            else resolve(result)
+        });
+    });
+}
+
+exports.createPersonal = (userId, sex, name, nickname, phone) => {
+    return new Promise((resolve, reject) => {
+        conn.query('INSERT INTO Personal(user_id, sex, name, nickname, phone) VALUES(?,?,?,?,?)',
+            [userId, sex, name, nickname, phone],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result)
+            });
+    });
+}
+
+exports.createBody = (userId, height, weight, waist) => {
+    return new Promise((resolve, reject) => {
+        conn.query('INSERT INTO Body(user_id, height, weight, waist) VALUES(?,?,?,?)',
+            [userId, height, weight, waist],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result)
+            });
+    });
+}
+
+exports.createStyle = (userId, styleId) => {
+    return new Promise((resolve, reject) => {
+        conn.query('INSERT INTO UserStyle(user_id, style_id) VALUES(?,?)',
+            [userId, styleId],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result)
+            });
+    });
 }
