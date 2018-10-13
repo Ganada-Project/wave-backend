@@ -134,11 +134,11 @@ exports.register = async (req, res) => {
 //     )
 // };
 
-exports.phone_number = async (req, res) => {
-    let random_verify = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 20);
+exports.getVerificationSMS = async (req, res) => {
+    let random_verify = Math.floor(1000 + Math.random() * 9000);
     random_verify = random_verify.toString();
     try {
-        await query.sendTextMessage(req.query.phone_number, random_verify);
+        await query.sendVerificationSMS(req.query.phone, random_verify);
         await res.status(200).json({
             verification_code: random_verify
         })

@@ -8,6 +8,46 @@ const FCM = require('fcm-node');
 const serverKey = 'AAAAyS0H1u0:APA91bFX9VjAXOe6hGbGu7CvRQg_qRZzFdOjwY_qper2qVxpiY6P-LEb5KLk_Rh96r0N9iD_NVm6yAwxzIqUZ702_wDQ2RZiNzBS9XdD3Ckf1L_bPxXHERiFmeT58g4REHGPZmT0If8G'; //put your server key here
 const fcm = new FCM(serverKey);
 const crypto = require('crypto');
+const https = require("https");
+
+exports.sendVerificationSMS = (phone_num, verification_code) => {
+    let credential = 'Basic ' + new Buffer(config.APPID + ':' + config.APIKEY).toString('base64');
+    let data = {
+        "sender": config.SENDER,
+        "receivers": [`${phone_num}`],
+        "content": `WAVE 인증번호는 [${verification_code}] 입니다.`
+    }
+    let body = JSON.stringify(data);
+
+    let options = {
+        host: 'api.bluehouselab.com',
+        port: 443,
+        path: '/smscenter/v1.0/sendsms',
+        headers: {
+            'Authorization': credential,
+            'Content-Type': 'application/json; charset=utf-8',
+            'Content-Length': Buffer.byteLength(body)
+        },
+        method: 'POST'
+    };
+    let req = https.request(options, function (res) {
+        let body = "";
+        res.on('data', function (d) {
+            body += d;
+        });
+        res.on('end', function (d) {
+            if (res.statusCode == 200)
+                console.log(JSON.parse(body));
+            else
+                console.log(body);
+        });
+    });
+    req.write(body);
+    req.end();
+    req.on('error', function (e) {
+        reject(e);
+    });
+}
 
 exports.getStyleById = (id) => {
     return new Promise((resolve, reject) => {
