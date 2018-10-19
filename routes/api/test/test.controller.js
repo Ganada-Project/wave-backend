@@ -3,7 +3,7 @@ const query = require("../common/query");
 exports.uploadImage = async (req, res) => {
     const {base64} = req.body;
     try {
-        result = await query.uploadImage(base64);
+        result = await query.image.uploadImage(base64);
         return res.status(200).json({
             result
         })
@@ -16,7 +16,7 @@ exports.getVerificationSMS = async (req, res) => {
     let random_verify = Math.floor(1000 + Math.random() * 9000);
     random_verify = random_verify.toString();
     try {
-        await query.sendVerificationSMS(req.query.phone, random_verify);
+        await query.sms.sendVerificationSMS(req.query.phone, random_verify);
         await res.status(200).json({
             verification_code: random_verify
         })

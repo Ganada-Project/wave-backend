@@ -50,7 +50,7 @@ app.use(morgan(':date'), function(req, res, next) {
 app.use(morgan(':status'), function(req, res, next) {
 	next();
 });
-query.uploadImage("")
+query.image.uploadImage("")
 
 // set the secret key variable for jwt
 app.set('jwt-secret', config.secret);

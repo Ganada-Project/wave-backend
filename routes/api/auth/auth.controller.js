@@ -17,7 +17,7 @@ exports.register = async (req, res) => {
             .digest('base64');
 
         //email overlap check
-        const user = await query.getUserByEmail(email);
+        const user = await query.user.getUserByEmail(email);
         if(user != undefined){
             return res.status(406).json({
                 message: 'user email already exists'
@@ -25,18 +25,18 @@ exports.register = async (req, res) => {
         }
 
         //create user
-        const createUser = await query.createUser(email, encrypted);
+        const createUser = await query.user.createUser(email, encrypted);
         const userId = createUser.insertId;
 
         //create personal
-        const createPersonal = await query.createPersonal(userId, sex, name, nickname, phone);
+        const createPersonal = await query.personal.createPersonal(userId, sex, name, nickname, phone);
 
         //create body
-        const createBody = await query.createBody(userId, height, weight, waist);
+        const createBody = await query.body.createBody(userId, height, weight, waist);
 
         //create styles
         for(style of styles){
-            const createStyle = await query.createStyle(userId, style);
+            const createStyle = await query.userstyle.createStyle(userId, style);
         }
         jwt.sign(
             {
@@ -59,42 +59,7 @@ exports.register = async (req, res) => {
     catch (err) {
         return res.status(400).json(err);
     }
-
-    // conn.query('SELECT * from Users WHERE email=?',[email], (err, rows) => {
-    //     if (err) throw err;
-    //     if (rows.length == 0) {
-    //         conn.query(
-    //             'INSERT INTO Users(username, password, email, phone, fcm_token) VALUES (?, ?, ?, ?, ?)',
-    //             [username, encrypted, email, phone, fcm_token],
-    //             (err, result) => {
-    //                 if (err) throw err;
-    //                 console.log(result);
-    //                 jwt.sign(
-    //                     {
-    //                         _id: result.insertId,
-    //                         email: email
-    //                     },
-    //                     secret,
-    //                     {
-    //                         expiresIn: '7d',
-    //                         issuer: 'rebay_admin',
-    //                         subject: 'userInfo'
-    //                     }, (err, token) => {
-    //                         if (err) return res.status(406).json({ message:'register failed' });
-    //                         return res.status(200).json({
-    //                             message: 'registered successfully',
-    //                             token
-    //                         });
-    //                     });
-    //             });
-    //     } else {
-    //         return res.status(406).json({
-    //             message: 'user email exists'
-    //         })
-    //     }
-    // });
-};
-
+}
 // exports.login = (req, res) => {
 //     const { email, password, fcm_token } = req.body;
 //     // console.log(email,password,config.secret);
@@ -137,14 +102,27 @@ exports.register = async (req, res) => {
 exports.getVerificationSMS = async (req, res) => {
     let random_verify = Math.floor(1000 + Math.random() * 9000);
     random_verify = random_verify.toString();
-    try {
-        await query.sendVerificationSMS(req.query.phone, random_verify);
+    // try {
+        await query.sms.sendVerificationSMS(req.query.phone, random_verify);
         await res.status(200).json({
             verification_code: random_verify
         })
-    } catch (err) {
-        return res.status(406).json({
-            err
-        })
-    }
+   // } catch (err) {
+   //      return res.status(400).json({
+   //          err
+   //      })
+    //}
 }
+
+exports.checkNicknameOverlap = async (req, res) => {
+    const {nickname} = req.body;
+    try {
+        const result = await query.personal.getPersonalByNickname(nickname);
+        const overlap = (result !== undefined);
+        return res.status(200).json({
+            overlap
+        })
+    } catch (err) {
+        return res.status(400).json(err);
+    }
+};
