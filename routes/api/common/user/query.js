@@ -28,7 +28,16 @@ exports.createUser = (email,password) => {
     });
 }
 
-
+exports.getUserById = (id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM User Where id = ?',
+            [id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result[0])
+            });
+    });
+}
 
 
 

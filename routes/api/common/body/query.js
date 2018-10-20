@@ -12,3 +12,14 @@ exports.createBody = (userId, height, weight, waist) => {
             });
     });
 }
+
+exports.getBodyByUserId = (userId) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Body WHERE user_id = ?',
+            [userId],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result[0])
+            });
+    });
+}

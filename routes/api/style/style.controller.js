@@ -3,7 +3,7 @@ const query = require("../common/query");
 exports.getStyleById = async (req, res) => {
     const {style_id} = req.params;
     try {
-        result = await query.style.getStyleById(style_id);
+        const result = await query.style.getStyleById(style_id);
         return res.status(200).json({
             result
         })
@@ -14,7 +14,7 @@ exports.getStyleById = async (req, res) => {
 
 exports.getAllStyles = async (req, res) => {
     try {
-        result = await query.style.getAllStyles();
+        const result = await query.style.getAllStyles();
         return res.status(200).json({
             result
         })

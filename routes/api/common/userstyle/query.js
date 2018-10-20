@@ -12,3 +12,12 @@ exports.createStyle = (userId, styleId) => {
             });
     });
 }
+
+exports.getStylesByUserId = (user_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query(`SELECT * FROM UserStyle WHERE user_id = '${user_id}'`, (err, result) => {
+            if (err) reject(err);
+            else resolve(result)
+        });
+    });
+}

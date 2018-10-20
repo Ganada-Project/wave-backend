@@ -31,3 +31,12 @@ exports.getPersonalById = (id) => {
         });
     });
 }
+
+exports.getPersonalByUserId = (user_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query(`SELECT * FROM Personal WHERE user_id = '${user_id}'`, (err, result) => {
+            if (err) reject(err);
+            else resolve(result[0])
+        });
+    });
+}
