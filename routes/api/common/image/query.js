@@ -20,7 +20,7 @@ exports.uploadImage = (base64) => {
             ACL: 'public-read'
         }, function (err, response) {
             if (err) reject(err);
-            else resolve(response);
+            else resolve(picUrl);
         });
     })
 }

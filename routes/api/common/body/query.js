@@ -23,3 +23,15 @@ exports.getBodyByUserId = (userId) => {
             });
     });
 }
+
+exports.saveBodyImage = (imgURL, bodyId) => {
+    return new Promise((resolve, reject) => {
+        conn.query('INSERT INTO BodyImage(img_url, body_id) VALUES(?,?)',
+            [imgURL, bodyId],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result)
+            });
+    });
+}
+

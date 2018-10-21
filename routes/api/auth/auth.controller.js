@@ -9,7 +9,7 @@ exports.register = async (req, res) => {
     try{
         const secret = req.app.get('jwt-secret');
         //get data
-        const { sex, email, nickname, name, phone, password, styles, height, weight, waist} = req.body;
+        const { sex, email, nickname, name, phone, password, styles, height, weight, waist, bodyImageBase64 } = req.body;
 
         //hash password
         const encrypted = crypto.createHmac('sha1', config.secret)
@@ -33,7 +33,10 @@ exports.register = async (req, res) => {
 
         //create body
         const createBody = await query.body.createBody(userId, height, weight, waist);
-
+        const bodyId = createBody.insertId;
+        // save body image
+        const returnedBodyImageURL = await query.image.uploadImage(bodyImageBase64);
+        const saveBodyImage = await query.body.saveBodyImage(returnedBodyImageURL, bodyId);
         //create styles
         for(style of styles){
             const createStyle = await query.userstyle.createStyle(userId, style);
