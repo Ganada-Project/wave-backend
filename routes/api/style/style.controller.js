@@ -29,7 +29,7 @@ exports.getStyleByUserId = async (req, res) => {
         const styleIds = await query.userstyle.getStylesByUserId(user_id);
         const styles = [];
         for(styleId of styleIds){
-            const style = await query.style.getStyleById(styleId);
+            const style = await query.style.getStyleById(styleId.style_id);
             styles.push(style);
         }
         const result = styles;
