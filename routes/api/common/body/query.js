@@ -35,3 +35,13 @@ exports.saveBodyImage = (imgURL, bodyId) => {
     });
 }
 
+exports.patchBodyByuserId = (userId, height, weight, waist) => {
+    return new Promise((resolve, reject) => {
+        conn.query('Update Body SET height=?,weight=?,waist=? WHERE user_id=?',
+            [height, weight, waist,userId],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result)
+            });
+    });
+}

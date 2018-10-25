@@ -36,3 +36,18 @@ exports.getUserById = async (req, res) => {
         return res.status(400).json(err);
     }
 };
+
+exports.updateBodyByUserId = async (req, res) => {
+    const {user_id, height, weight, waist} = req.body;
+    try {
+        const result = await query.body.patchBodyByuserId(user_id,height,weight,waist);
+
+
+        return res.status(200).json({
+            result
+
+        });
+    } catch (err) {
+        return res.status(400).json(err);
+    }
+};
