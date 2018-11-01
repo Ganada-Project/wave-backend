@@ -1,6 +1,12 @@
 const mysql = require('mysql');
 const config = require('../../../../config');
 const conn = mysql.createConnection(config);
+global.XMLHttpRequest = require("xhr2");
+const tf = require('@tensorflow/tfjs');
+require('@tensorflow/tfjs-node');
+const fetch = require('node-fetch');
+const { Image, createCanvas } = require('canvas');
+const posenet = require('@tensorflow-models/posenet');
 
 exports.createBody = (userId, height, weight, waist) => {
     return new Promise((resolve, reject) => {
@@ -34,4 +40,23 @@ exports.saveBodyImage = (imgURL, bodyId) => {
             });
     });
 }
+exports.estimateBodyPoints = async(url) => {
+    return new Promise(async(resolve, reject) => {
+        let img_path = url;
+        let buffer = await fetch(img_path).then(res => res.buffer());
+        let img = new Image();
+        img.src = buffer;
+        const canvas = createCanvas(img.width, img.height);
+        canvas.getContext('2d').drawImage(img, 0, 0);
 
+        const imageScaleFactor = 0.5;
+        const flipHorizontal = false;
+        const outputStride = 8;
+        const multiplier = 0.5;
+
+        const net = await posenet.load(multiplier);
+        const pose = await net.estimateSinglePose(canvas, imageScaleFactor, flipHorizontal, outputStride);
+        console.log(pose);
+        resolve(pose);
+    });
+}

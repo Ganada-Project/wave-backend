@@ -26,3 +26,18 @@ exports.getVerificationSMS = async (req, res) => {
         })
     }
 }
+
+exports.getPoints = async(req, res) => {
+    const { url } = req.body;
+    // let points = await query.body.estimateBodyPoints(url);
+    try {
+        let points = await query.body.estimateBodyPoints(url);
+        return res.status(200).json({
+            points
+        })
+    } catch (err) {
+        return res.status(406).json({
+            err
+        })
+    }
+}
