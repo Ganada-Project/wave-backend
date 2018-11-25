@@ -7,8 +7,6 @@
     "build": "babel src -d build"
   },
   "dependencies": {
-    "@tensorflow-models/posenet": "^0.2.3",
-    "@tensorflow/tfjs-node": "^0.1.21",
     "aws-sdk": "^2.203.0",
     "babel-register": "^6.26.0",
     "body-parser": "~1.17.1",
