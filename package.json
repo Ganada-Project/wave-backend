@@ -7,9 +7,12 @@
     "build": "babel src -d build"
   },
   "dependencies": {
+    "@tensorflow-models/posenet": "^0.2.3",
+    "@tensorflow/tfjs-node": "^0.1.21",
     "aws-sdk": "^2.203.0",
     "babel-register": "^6.26.0",
     "body-parser": "~1.17.1",
+    "canvas": "^2.1.0",
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
@@ -27,6 +30,7 @@
     "serve-favicon": "~2.4.2",
     "swagger-ui": "^3.10.0",
     "twilio": "^3.18.0",
+    "xhr2": "^0.1.4",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {

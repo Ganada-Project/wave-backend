@@ -2,7 +2,6 @@ const mysql = require('mysql');
 const config = require('../../../../config');
 const conn = mysql.createConnection(config);
 global.XMLHttpRequest = require("xhr2");
-const tf = require('@tensorflow/tfjs');
 require('@tensorflow/tfjs-node');
 const fetch = require('node-fetch');
 const { Image, createCanvas } = require('canvas');
