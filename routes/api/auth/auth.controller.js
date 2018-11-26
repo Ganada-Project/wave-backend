@@ -9,34 +9,36 @@ exports.register = async (req, res) => {
     try{
         const secret = req.app.get('jwt-secret');
         //get data
-        const { sex, email, nickname, name, phone, password, styles, height, weight, waist, bodyImageBase64 } = req.body;
+        const { sex, nickname, name, phone, password, styles, height, weight, waist, bodyImageBase64 } = req.body;
 
         //hash password
         const encrypted = crypto.createHmac('sha1', config.secret)
             .update(password)
             .digest('base64');
 
-        //email overlap check
-        const user = await query.user.getUserByEmail(email);
+        //phone number duplicate check
+        const user = await query.user.getUserByPhone(phone);
         if(user != undefined){
             return res.status(406).json({
-                message: 'user email already exists'
+                message: 'user phone already exists'
             })
         }
 
         //create user
-        const createUser = await query.user.createUser(email, encrypted);
+        const createUser = await query.user.createUser(phone, encrypted);
         const userId = createUser.insertId;
 
         //create personal
-        const createPersonal = await query.personal.createPersonal(userId, sex, name, nickname, phone);
+        const createPersonal = await query.personal.createPersonal(userId, sex, name, nickname);
 
         //create body
         const createBody = await query.body.createBody(userId, height, weight, waist);
         const bodyId = createBody.insertId;
+
         // save body image
         const returnedBodyImageURL = await query.image.uploadImage(bodyImageBase64);
         const saveBodyImage = await query.body.saveBodyImage(returnedBodyImageURL, bodyId);
+
         //create styles
         for(style of styles){
             const createStyle = await query.userstyle.createStyle(userId, style);
@@ -44,7 +46,7 @@ exports.register = async (req, res) => {
         jwt.sign(
             {
                 _id: userId,
-                email: email
+                phone: phone
             },
             secret,
             {

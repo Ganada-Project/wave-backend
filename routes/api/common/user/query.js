@@ -8,19 +8,19 @@ const conn = mysql.createConnection(config);
 // const crypto = require('crypto');
 // const https = require("https");
 
-exports.getUserByEmail = (email) => {
+exports.getUserByPhone = (phone) => {
     return new Promise((resolve, reject) => {
-        conn.query(`SELECT * FROM User WHERE email = '${email}'`, (err, result) => {
+        conn.query(`SELECT * FROM User WHERE phone = '${phone}'`, (err, result) => {
             if (err) reject(err);
             else resolve(result[0])
         });
     });
 }
 
-exports.createUser = (email,password) => {
+exports.createUser = (phone,password) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO User(email, password) VALUES(?,?)',
-            [email, password],
+        conn.query('INSERT INTO User(phone, password) VALUES(?,?)',
+            [phone, password],
             (err, result) => {
                 if (err) reject(err);
                 else resolve(result)
