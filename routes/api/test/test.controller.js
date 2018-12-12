@@ -41,3 +41,32 @@ exports.getPoints = async(req, res) => {
         })
     }
 }
+
+exports.saveAdjustedBodyPoints = async(req, res) => {
+    const { body_image_id, top, neck, shoulder, wrist, ankle, bottom, thigh_l, thigh_r, chest_l, chest_r, waist_l, waist_r } = req.body;
+    let bodyPoints = {
+        body_image_id, 
+        top, 
+        neck, 
+        shoulder, 
+        wrist, 
+        ankle, 
+        bottom, 
+        thigh_l, 
+        thigh_r, 
+        chest_l, 
+        chest_r, 
+        waist_l, 
+        waist_r
+    }
+    try {
+        let result = await query.body.saveAdjustedBodyPoints(bodyPoints);
+        return res.status(200).json({
+            result
+        })
+    } catch (err) {
+        return res.status(406).json({
+            err
+        })
+    }
+}

@@ -19,6 +19,17 @@ exports.createBody = (userId, height, weight, waist) => {
     });
 }
 
+exports.saveAdjustedBodyPoints = (bodyPoints) => {
+    return new Promise((resolve, reject) => {
+        conn.query('INSERT INTO BodyPoints(body_image_id, top, neck, shoulder, wrist, ankle, bottom, thigh_l, thigh_r, chest_l, chest_r, waist_l, waist_r) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',
+            [bodyPoints.body_image_id, bodyPoints.top, bodyPoints.neck, bodyPoints.shoulder, bodyPoints.wrist, bodyPoints.ankle, bodyPoints.bottom, bodyPoints.thigh_l, bodyPoints.thigh_r, bodyPoints.chest_l, bodyPoints.chest_r, bodyPoints.waist_l, bodyPoints.waist_r],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result)
+            });
+    });
+}
+
 exports.getBodyByUserId = (userId) => {
     return new Promise((resolve, reject) => {
         conn.query('SELECT * FROM Body WHERE user_id = ?',
