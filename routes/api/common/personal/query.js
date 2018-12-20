@@ -40,3 +40,14 @@ exports.getPersonalByUserId = (user_id) => {
         });
     });
 }
+
+exports.createBrandPersonal = (phone, brand_name, business_number, marketing, user_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query(`INSERT INTO Brand(phone, brand_name, business_number, marketing, user_id) VALUES(?,?,?,?,?)`,
+            [phone, brand_name, business_number, marketing, user_id],
+            (err, result) => {
+                if(err) reject(err);
+                else resolve(result);
+            })
+    })
+}

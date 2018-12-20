@@ -6,6 +6,8 @@ const sms = require('../common/sms/query');
 const style = require('../common/style/query');
 const user = require('../common/user/query');
 const userstyle = require('../common/userstyle/query');
+const brand = require('../common/brand/query');
+const brandstyle = require('../common/brandstyle/query');
 
 
 module.exports = {
@@ -15,7 +17,8 @@ module.exports = {
     sms,
     style,
     user,
-    userstyle
-
+    userstyle,
+    brand,
+    brandstyle
 };
 

@@ -17,10 +17,10 @@ exports.getUserByPhone = (phone) => {
     });
 }
 
-exports.createUser = (phone,password) => {
+exports.createUser = (phone,password,is_brand) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO User(phone, password) VALUES(?,?)',
-            [phone, password],
+        conn.query('INSERT INTO User(phone, password, is_brand) VALUES(?,?,?)',
+            [phone, password, is_brand],
             (err, result) => {
                 if (err) reject(err);
                 else resolve(result)

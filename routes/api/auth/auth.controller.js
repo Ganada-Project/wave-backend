@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
         }
 
         //create user
-        const createUser = await query.user.createUser(phone, encrypted);
+        const createUser = await query.user.createUser(phone, encrypted, 0);
         const userId = createUser.insertId;
 
         //create personal
@@ -62,6 +62,42 @@ exports.register = async (req, res) => {
             });
     }
     catch (err) {
+        return res.status(400).json(err);
+    }
+}
+
+exports.register_brand = async(req, res) => {
+    try {
+        const secret = req.app.get('jwt-secret');
+        const { email, password, brand_name, business_number, phone, marketing, styles } = req.body;
+        //hash password
+        const encrypted = crypto.createHmac('sha1', config.secret)
+            .update(password)
+            .digest('base64');
+
+        const createBrand = await query.brand.createBrand(email, encrypted, brand_name, business_number, phone, marketing);
+        const brand_id = createBrand.insertId;
+        for (style of styles) {
+            const createStyle = await query.brandstyle.createBrandStyle(brand_id, style);
+        }
+        jwt.sign(
+            {
+                _id: brand_id,
+                phone: phone
+            },
+            secret,
+            {
+                expiresIn: '7d',
+                issuer: 'rebay_admin',
+                subject: 'brandInfo'
+            }, (err, token) => {
+                if (err) return res.status(406).json({ message: 'register failed' });
+                return res.status(200).json({
+                    message: 'registered successfully',
+                    token
+                });
+            });
+    } catch (err) {
         return res.status(400).json(err);
     }
 }
