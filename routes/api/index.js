@@ -4,6 +4,7 @@ const style = require('./style');
 const test = require('./test');
 const user = require('./user');
 const auth = require('./auth');
+const category = require('./category');
 const authMiddleware = require('../../middlewares/auth');
 
 router.use('/auth', auth);
@@ -14,5 +15,6 @@ router.use('/user', user);
 //router.use('/style', authMiddleware);
 router.use('/style', style);
 router.use('/test', test);
+router.use('/category', category);
 
 module.exports = router;

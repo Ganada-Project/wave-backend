@@ -23,20 +23,13 @@ exports.createSize = (height,waist,chest,arm,shoulder,thigh,hip,leg) => {
     });
 }
 
-// exports.getItemById = (id) => {
-//     return new Promise((resolve, reject) => {
-//         conn.query(`SELECT * FROM Personal WHERE id = '${id}'`, (err, result) => {
-//             if (err) reject(err);
-//             else resolve(result[0])
-//         });
-//     });
-// }
-//
-// exports.createItem = (user_id) => {
-//     return new Promise((resolve, reject) => {
-//         conn.query(`SELECT * FROM Personal WHERE user_id = '${user_id}'`, (err, result) => {
-//             if (err) reject(err);
-//             else resolve(result[0])
-//         });
-//     });
-// }
+exports.getItemById = (id) => {
+    return new Promise((resolve, reject) => {
+        conn.query(`SELECT * FROM Item WHERE id = '${id}'`, (err, result) => {
+            if (err) reject(err);
+            else resolve(result[0])
+        });
+    });
+}
+
+

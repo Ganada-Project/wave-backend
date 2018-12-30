@@ -8,6 +8,7 @@ const user = require('../common/user/query');
 const userstyle = require('../common/userstyle/query');
 const brand = require('../common/brand/query');
 const brandstyle = require('../common/brandstyle/query');
+const category= require('../common/category/query');
 
 
 module.exports = {
@@ -19,6 +20,7 @@ module.exports = {
     user,
     userstyle,
     brand,
-    brandstyle
+    brandstyle,
+    category
 };
 
