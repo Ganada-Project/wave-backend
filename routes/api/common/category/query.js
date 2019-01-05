@@ -22,3 +22,14 @@ exports.getCategory2ByParentId = (parent_id) => {
     });
 };
 
+exports.getCategory3ByParentId = (parent_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Item_Category3 WHERE parent_id = ?',
+            [parent_id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+    });
+};
+
