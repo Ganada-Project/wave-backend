@@ -6,7 +6,7 @@ global.XMLHttpRequest = require("xhr2");
 // require('@tensorflow/tfjs-node');
 const fetch = require('node-fetch');
 const { Image, createCanvas } = require('canvas');
-const posenet = require('@tensorflow-models/posenet');
+// const posenet = require('@tensorflow-models/posenet');
 
 exports.createBody = (userId, height, weight, waist) => {
     return new Promise((resolve, reject) => {
