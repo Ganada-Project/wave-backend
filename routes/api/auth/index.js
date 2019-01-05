@@ -5,4 +5,6 @@ router.post('/register', controller.register);
 router.post('/register/brand', controller.register_brand);
 router.get('/phone', controller.getVerificationSMS);
 router.post('/check/nickname', controller.checkNicknameOverlap);
+router.post('/login/brand', controller.brandLogin);
+router.post('/login/user', controller.login);
 module.exports = router;

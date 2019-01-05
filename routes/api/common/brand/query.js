@@ -20,6 +20,16 @@ exports.createBrand = (email, password, brand_name, business_number, phone, mark
     });
 }
 
+exports.getBrandById = (id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Brand Where id = ?',
+            [id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result[0])
+            });
+    });
+}
 
 
 
