@@ -5,7 +5,7 @@ const mysql = require('mysql');
 const config = require('./config');
 const conn = mysql.createConnection(config);
 const query = require('./routes/api/common/query');
-
+var cors = require('cors');
 /* =======================
  LOAD THE CONFIG
  ==========================*/
@@ -15,6 +15,7 @@ const port = process.env.PORT || 3000;
  EXPRESS CONFIGURATION
  ==========================*/
 const app = express();
+app.use(cors());
 // process.on('uncaughtException', function(err) {
 // 	console.log('Caught exception: ' + err);
 // });
