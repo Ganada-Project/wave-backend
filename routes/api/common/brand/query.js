@@ -9,10 +9,10 @@ const conn = mysql.createConnection(config);
 // const https = require("https");
 
 
-exports.createBrand = (email, password, brand_name, business_number, phone, marketing) => {
+exports.createBrand = (email, password, brand_name, business_number, phone, marketing, is_online_market, online_number) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO Brand(email, password, brand_name, business_number, phone, marketing) VALUES(?,?,?,?,?,?)',
-            [email, password, brand_name, business_number, phone, marketing],
+        conn.query('INSERT INTO Brand(email, password, brand_name, business_number, phone, marketing, is_online_market, online_number) VALUES(?,?,?,?,?,?,?,?)',
+            [email, password, brand_name, business_number, phone, marketing, is_online_market, online_number],
             (err, result) => {
                 if (err) reject(err);
                 else resolve(result)

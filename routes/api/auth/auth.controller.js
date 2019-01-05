@@ -69,13 +69,13 @@ exports.register = async (req, res) => {
 exports.register_brand = async(req, res) => {
     try {
         const secret = req.app.get('jwt-secret');
-        const { email, password, brand_name, business_number, phone, marketing, styles } = req.body;
+        const { email, password, brand_name, business_number, phone, marketing, styles, is_online_market, online_number } = req.body;
         //hash password
         const encrypted = crypto.createHmac('sha1', config.secret)
             .update(password)
             .digest('base64');
 
-        const createBrand = await query.brand.createBrand(email, encrypted, brand_name, business_number, phone, marketing);
+        const createBrand = await query.brand.createBrand(email, encrypted, brand_name, business_number, phone, marketing, is_online_market, online_number);
         const brand_id = createBrand.insertId;
         for (style of styles) {
             const createStyle = await query.brandstyle.createBrandStyle(brand_id, style);
