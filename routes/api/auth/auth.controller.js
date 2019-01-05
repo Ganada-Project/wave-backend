@@ -75,6 +75,13 @@ exports.register_brand = async(req, res) => {
             .update(password)
             .digest('base64');
 
+        const brand = await query.brand.checkDuplicateBrand(email, brand_name);
+        if (brand.length != 0) {
+            return res.status(406).json({
+                message: 'brand_name or email already exists'
+            })
+        }
+
         const createBrand = await query.brand.createBrand(email, encrypted, brand_name, business_number, phone, marketing, is_online_market, online_number);
         const brand_id = createBrand.insertId;
         for (style of styles) {

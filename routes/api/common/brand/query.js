@@ -8,6 +8,18 @@ const conn = mysql.createConnection(config);
 // const crypto = require('crypto');
 // const https = require("https");
 
+exports.checkDuplicateBrand = (email, brand_name) => {
+    return new Promise((resolve, reject) => {
+        conn.query(
+            "SELECT * FROM Brand WHERE email = ? or brand_name = ?",
+            [email, brand_name],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            }
+        )
+    })
+}
 
 exports.createBrand = (email, password, brand_name, business_number, phone, marketing, is_online_market, online_number) => {
     return new Promise((resolve, reject) => {
