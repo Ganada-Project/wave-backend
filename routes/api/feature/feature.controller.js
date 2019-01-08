@@ -9,6 +9,8 @@ exports.getAllFeatures = async (req, res) => {
         quality = await query.feature.getQuality();
         texture = await query.feature.getTexture();
         thickness = await query.feature.getThickness();
+        season = await query.feature.getSeason();
+
         return res.status(200).json({
             elasticity,
             lining,
@@ -16,6 +18,7 @@ exports.getAllFeatures = async (req, res) => {
             quality,
             texture,
             thickness,
+            season
         })
     } catch (err) {
         return res.status(400).json(err);

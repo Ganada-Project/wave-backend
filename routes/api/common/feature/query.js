@@ -66,7 +66,15 @@ exports.getThickness = () => {
             });
     });
 }
-
+exports.getSeason = () => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Season',
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result)
+            });
+    });
+}
 
 
 
