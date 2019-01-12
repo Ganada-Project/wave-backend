@@ -43,5 +43,27 @@ exports.getBrandById = (id) => {
     });
 }
 
+exports.getBrandByName = (brand_name) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Brand Where brand_name = ?',
+            [brand_name],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result[0])
+            });
+    });
+}
+
+exports.getBrandByEmail = (brand_email) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Brand Where email = ?',
+            [brand_email],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result[0])
+            });
+    });
+}
+
 
 

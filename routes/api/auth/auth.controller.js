@@ -75,12 +75,12 @@ exports.register_brand = async(req, res) => {
             .update(password)
             .digest('base64');
 
-        const brand = await query.brand.checkDuplicateBrand(email, brand_name);
-        if (brand.length != 0) {
-            return res.status(406).json({
-                message: 'brand_name or email already exists'
-            })
-        }
+        // const brand = await query.brand.checkDuplicateBrand(email, brand_name);
+        // if (brand.length != 0) {
+        //     return res.status(406).json({
+        //         message: 'brand_name or email already exists'
+        //     })
+        // }
 
         const createBrand = await query.brand.createBrand(email, encrypted, brand_name, business_number, phone, marketing, is_online_market, online_number);
         const brand_id = createBrand.insertId;
@@ -212,3 +212,39 @@ exports.checkNicknameOverlap = async (req, res) => {
         return res.status(400).json(err);
     }
 };
+
+exports.checkBrandNameOverlap = async (req, res) => {
+    // const { brand_name } = req.body;
+    try {
+        const result = await query.brand.getBrandByName(req.query.name);
+        if (result === undefined) {
+            return res.status(200).json({
+                brand_name_overlap: false
+            })
+        } else {
+            return res.status(200).json({
+                brand_name_overlap: true
+            })
+        }
+    } catch (err) {
+        return res.status(400).json(err);
+    }
+}
+
+exports.checkBrandEmailOverlap = async (req, res) => {
+    // const { brand_email } = req.body;
+    try {
+        const result = await query.brand.getBrandByEmail(req.query.email);
+        if (result === undefined) {
+            return res.status(200).json({
+                brand_email_overlap: false
+            })
+        } else {
+            return res.status(200).json({
+                brand_email_overlap: true
+            })
+        }
+    } catch (err) {
+        return res.status(400).json(err);
+    }
+}
