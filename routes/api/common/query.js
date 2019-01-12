@@ -10,6 +10,8 @@ const brand = require('../common/brand/query');
 const brandstyle = require('../common/brandstyle/query');
 const category = require('../common/category/query');
 const feature = require('../common/feature/query');
+const size = require('../common/size/query');
+const item = require('../common/item/query');
 
 module.exports = {
     body,
@@ -22,6 +24,8 @@ module.exports = {
     brand,
     brandstyle,
     category,
-    feature
+    feature,
+    item,
+    size
 };
 
