@@ -33,3 +33,14 @@ exports.getCategory3ByParentId = (parent_id) => {
     });
 };
 
+exports.createCategory = (category1, category2, category3) => {
+    return new Promise((resolve, reject) => {
+        conn.query('INSERT INTO Item_Category(category1_id,category2_id,category3_id) VALUES(?,?,?)',
+            [category1,category2,category3],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result)
+            });
+    });
+};
+
