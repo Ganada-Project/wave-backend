@@ -6,7 +6,7 @@ const conn = mysql.createConnection(config);
 const query = require('../common/query');
 
 exports.register = async (req, res) => {
-    try{
+    // try{
         const secret = req.app.get('jwt-secret');
         //get data
         const { sex, nickname, name, phone, password, styles, height, weight, waist, bodyImageBase64 } = req.body;
@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
         }
 
         //create user
-        const createUser = await query.user.createUser(phone, encrypted, 0);
+        const createUser = await query.user.createUser(phone, encrypted);
         const userId = createUser.insertId;
 
         //create personal
@@ -60,10 +60,10 @@ exports.register = async (req, res) => {
                     token
                 });
             });
-    }
-    catch (err) {
+    // }
+    // catch (err) {
         return res.status(400).json(err);
-    }
+    // }
 }
 
 exports.register_brand = async(req, res) => {
