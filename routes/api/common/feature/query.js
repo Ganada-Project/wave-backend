@@ -76,5 +76,13 @@ exports.getSeason = () => {
     });
 }
 
-
-
+exports.createFeature = (quality,thickness,elasticity,texture,lining,opacity) => {
+    return new Promise((resolve, reject) => {
+        conn.query('INSERT INTO Feature(quality_id,thickness_id,elasticity_id,texture_id,lining_id,opacity_id) VALUES(?,?,?,?,?,?)',
+            [quality,thickness,elasticity,texture,lining,opacity],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result)
+            });
+    });
+}
