@@ -32,4 +32,16 @@ exports.getItemById = (id) => {
     });
 }
 
+exports.saveItemImage = (item_id, img_url) =>{ 
+    return new Promise((resolve, reject) => {
+        conn.query(
+            "INSERT INTO Item_Image(img_url, item_id) VALUES(?, ?)",
+            [img_url, item_id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            }
+        )
+    })
+}
 

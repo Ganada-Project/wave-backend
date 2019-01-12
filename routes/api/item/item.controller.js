@@ -17,6 +17,10 @@ exports.createItem = async (req, res) => {
         item_id = size.insertId;
         //지우가 할일. 여기서 하나의 아이템이 만들어지고 만들어진 아이템 아이디가 바로위에 있는 변수 item_id 에 저장됨.
         //Item_Image 테이블 만들어놨음 (시퀄참조)
+        for(let i = 0; i < images.length; i++) {
+            let image_url = await query.image.uploadImage(images[i]);
+            let result = await query.item.saveItemImage(image_url, item_id);
+        }
         //req.body 에서 images가 base64배열이라고 생각하고 이미지 각각 서버에 올린다음 Item_Image table 채우기
         return res.status(200).json({
             message:"success"
