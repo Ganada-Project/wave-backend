@@ -17,10 +17,13 @@ router.use('/user', user);
 //router.use('/style', authMiddleware);
 router.use('/style', style);
 
-router.use('/item', item);
+
 
 router.use('/test', test);
 router.use('/category', category);
+
+router.use('/item', authMiddleware);
+router.use('/item', item);
 router.use('/feature', feature);
 
 module.exports = router;
