@@ -12,10 +12,10 @@ exports.getMeasurePreset = () => {
     });
 }
 
-exports.createSize = (height,waist,chest,arm,shoulder,thigh,hip,leg) => {
+exports.createItem = (brand_id, sex, category_id, style_id, size_id, feature_id,name,price,season) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO Size(height,waist,chest,arm,shoulder,thigh,hip,leg) VALUES(?,?,?,?,?,?,?,?)',
-            [height,waist,chest,arm,shoulder,thigh,hip,leg],
+        conn.query('INSERT INTO Item(brand_id, sex, category_id, style_id, size_id, feature_id,name,price,season_id) VALUES(?,?,?,?,?,?,?,?,?)',
+            [brand_id, sex, category_id, style_id, size_id, feature_id,name, price,season],
             (err, result) => {
                 if (err) reject(err);
                 else resolve(result)
