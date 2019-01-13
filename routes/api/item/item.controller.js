@@ -19,7 +19,7 @@ exports.createItem = async (req, res) => {
         //Item_Image 테이블 만들어놨음 (시퀄참조)
         for(let i = 0; i < images.length; i++) {
             let image_url = await query.image.uploadImage(images[i]);
-            let result = await query.item.saveItemImage(image_url, item_id);
+            let result = await query.item.saveItemImage(item_id, image_url);
         }
         //req.body 에서 images가 base64배열이라고 생각하고 이미지 각각 서버에 올린다음 Item_Image table 채우기
         return res.status(200).json({
