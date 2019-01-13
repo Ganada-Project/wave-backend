@@ -14,7 +14,7 @@ exports.createItem = async (req, res) => {
         feature_id = feature.insertId;
         size_id = size.insertId;
         item = await query.item.createItem(brand_id,sex,category_id,style,size_id,feature_id,name,price,season);
-        item_id = size.insertId;
+        item_id = item.insertId;
         //지우가 할일. 여기서 하나의 아이템이 만들어지고 만들어진 아이템 아이디가 바로위에 있는 변수 item_id 에 저장됨.
         //Item_Image 테이블 만들어놨음 (시퀄참조)
         for(let i = 0; i < images.length; i++) {
