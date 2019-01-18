@@ -22,7 +22,8 @@ exports.createItem = async (req, res) => {
         }
 
         return res.status(200).json({
-            message:"success"
+            message:"success",
+            id: item_id
         })
     } catch (err) {
         return res.status(400).json(err);
