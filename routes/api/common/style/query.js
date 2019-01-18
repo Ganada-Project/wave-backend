@@ -11,6 +11,7 @@ exports.getStyleById = (id) => {
     });
 }
 
+
 exports.getAllStyles = () => {
     return new Promise((resolve, reject) => {
         conn.query(`SELECT * FROM Style`, (err, result) => {
@@ -20,12 +21,20 @@ exports.getAllStyles = () => {
     });
 }
 
-exports.getAllStyles = () => {
+
+exports.recommendStyleByUserStyle = (styles) => {
     return new Promise((resolve, reject) => {
-        conn.query(`SELECT * FROM Style`, (err, result) => {
-            if (err) reject(err);
-            else resolve(result)
-        });
-    });
+        sql = "SELECT brand_name FROM Brand JOIN BrandStyle ON Brand.id = BrandStyle.brand_id WHERE main = 1 and (style_id = " + styles[0];
+        for(let i = 0; i < styles.length; i++) {
+            sql += " or style_id = "+styles[i];
+        }
+        conn.query(
+            sql+")",
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            }
+        )
+    })
 }
 
