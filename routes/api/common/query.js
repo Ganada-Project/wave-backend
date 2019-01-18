@@ -13,6 +13,7 @@ const feature = require('../common/feature/query');
 const size = require('../common/size/query');
 const item = require('../common/item/query');
 const itemsize = require('../common/itemsize/query');
+const sizemeasure = require('../common/sizemeasure/query');
 
 module.exports = {
     body,
@@ -28,6 +29,7 @@ module.exports = {
     feature,
     item,
     size,
-    itemsize
+    itemsize,
+    sizemeasure
 };
 

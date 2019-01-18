@@ -31,10 +31,14 @@ exports.createItem = async (req, res) => {
 };
 
 exports.createSize = async (req, res) => {
-    const {height,waist,chest,arm,shoulder,thigh,hip,leg,name,item_id} = req.body;
+    const {height,waist,chest,arm,shoulder,thigh,hip,leg,name,item_id,
+        height_measure,waist_measure,chest_measure,arm_measure,shoulder_measure,
+        thigh_measure,hip_measure,leg_measure} = req.body;
     try {
 
         size = await query.size.createSize(height,waist,chest,arm,shoulder,thigh,hip,leg,name,item_id);
+        measure = await query.sizemeasure.createSizeMeasure(height_measure,waist_measure,chest_measure,
+            arm_measure,shoulder_measure,thigh_measure,hip_measure,leg_measure,size.insertId);
 
         return res.status(200).json({
             message:"success"
