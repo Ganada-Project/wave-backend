@@ -20,3 +20,12 @@ exports.getAllStyles = () => {
     });
 }
 
+exports.getAllStyles = () => {
+    return new Promise((resolve, reject) => {
+        conn.query(`SELECT * FROM Style`, (err, result) => {
+            if (err) reject(err);
+            else resolve(result)
+        });
+    });
+}
+
