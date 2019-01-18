@@ -32,7 +32,7 @@ exports.getItemById = (id) => {
     });
 }
 
-exports.saveItemImage = (item_id, img_url) =>{ 
+exports.saveItemImage = (item_id, img_url) =>{
     return new Promise((resolve, reject) => {
         conn.query(
             "INSERT INTO Item_Image(img_url, item_id) VALUES(?, ?)",
@@ -45,3 +45,14 @@ exports.saveItemImage = (item_id, img_url) =>{
     })
 }
 
+exports.getItemsByBrandId = (brand_id) =>{
+    return new Promise((resolve, reject) => {
+        conn.query(
+            "SELECT * FROM Item WHERE brand_id = ?",[brand_id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            }
+        )
+    })
+}
