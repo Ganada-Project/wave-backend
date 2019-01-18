@@ -14,6 +14,7 @@ const size = require('../common/size/query');
 const item = require('../common/item/query');
 const itemsize = require('../common/itemsize/query');
 const sizemeasure = require('../common/sizemeasure/query');
+const season = require('../common/season/query');
 
 module.exports = {
     body,
@@ -30,6 +31,7 @@ module.exports = {
     item,
     size,
     itemsize,
-    sizemeasure
+    sizemeasure,
+    season
 };
 
