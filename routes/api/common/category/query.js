@@ -44,3 +44,43 @@ exports.createCategory = (category1, category2, category3) => {
     });
 };
 
+exports.getCategoryById = (id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Item_Category WHERE id = ?',
+            [id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+    });
+};
+exports.getCategory1ById = (id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Item_Category1 WHERE id = ?',
+            [id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+    });
+};
+exports.getCategory2ById = (id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Item_Category2 WHERE id = ?',
+            [id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+    });
+};
+exports.getCategory3ById = (id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Item_Category3 WHERE id = ?',
+            [id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+    });
+};
