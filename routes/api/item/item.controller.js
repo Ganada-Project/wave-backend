@@ -49,7 +49,7 @@ exports.createSize = async (req, res) => {
 }
 
 exports.getItemsByBrandId = async (req, res) => {
-    const {brand_id} = req.params;
+    const brand_id = req.decoded._id;
     try {
         const items = await query.item.getItemsByBrandId(brand_id);
         const products = [];
