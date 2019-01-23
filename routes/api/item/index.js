@@ -6,8 +6,6 @@ router.post('/size', controller.createSize);
 router.get('', controller.getItemsByBrandId);
 router.get('/one', controller.getItemById);
 
-// router.post('/onsale/:item_id', controller.makeOnSale);
-// router.post('/offsale/:item_id', controller.makeOffSale);
-
+router.post('/onsale/:item_id', controller.toggleOnSale);
 module.exports = router;
 

@@ -56,3 +56,27 @@ exports.getItemsByBrandId = (brand_id) =>{
         )
     })
 }
+
+exports.toggleOnSale = (item_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query(
+            "UPDATE Item SET on_sale=1 WHERE id=?", [item_id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            }
+        )
+    })
+}
+
+exports.toggleOffSale = (item_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query(
+            "UPDATE Item SET on_sale=0 WHERE id=?", [item_id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            }
+        )
+    })
+}

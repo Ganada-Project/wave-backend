@@ -108,3 +108,19 @@ exports.getItemById = async (req, res) => {
         return res.status(400).json(err);
     }
 }
+
+exports.toggleOnSale = async (req, res) => {
+    try {
+        const item = await query.item.getItemById(req.params.item_id);
+        if (item.on_sale === 0) {
+            await query.item.toggleOnSale(item.id);
+        } else {
+            await query.item.toggleOffSale(item.id);
+        }
+        return res.status(200).json({
+            message: "on sale toggled"
+        })
+    } catch (err) {
+        return res.status(400).json(err);
+    }
+}
