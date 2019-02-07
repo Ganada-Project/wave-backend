@@ -79,3 +79,48 @@ exports.getItemsByBrandId = async (req, res) => {
         return res.status(400).json(err);
     }
 }
+
+exports.getItemById = async (req, res) => {
+    try {
+        const item = await query.item.getItemById(req.query.item_id);
+        let product = {};
+        product.name = item.name;
+        category = await query.category.getCategoryById(item.category_id);
+        category1 = await query.category.getCategory1ById(category[0].category1_id);
+        category2 = await query.category.getCategory2ById(category[0].category2_id);
+        category3 = await query.category.getCategory3ById(category[0].category3_id);
+        season = await query.season.getSeasonById(item.season_id);
+
+        product.category1 = category1[0];
+        product.category2 = category2[0];
+        product.category3 = category3[0];
+        product.season = season[0];
+        product.price = item.price;
+        product.rate = 0;
+        product.on_sale = item.on_sale;
+        product.images = [];
+
+        const result = product;
+        return res.status(200).json({
+            result
+        })
+    } catch (err) {
+        return res.status(400).json(err);
+    }
+}
+
+exports.toggleOnSale = async (req, res) => {
+    try {
+        const item = await query.item.getItemById(req.params.item_id);
+        if (item.on_sale === 0) {
+            await query.item.toggleOnSale(item.id);
+        } else {
+            await query.item.toggleOffSale(item.id);
+        }
+        return res.status(200).json({
+            message: "on sale toggled"
+        })
+    } catch (err) {
+        return res.status(400).json(err);
+    }
+}
