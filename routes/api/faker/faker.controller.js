@@ -1,6 +1,8 @@
 const query = require("../common/query");
 const jwt = require('jsonwebtoken');
 const faker = require('Faker');
+const crypto = require('crypto');
+const config = require('../../../config');
 exports.generateItem = async (req, res) => {
     const category2_mask = [1,1,1,2,2,3,4,4,4,4,1];
     const category3_mask =
@@ -19,10 +21,10 @@ exports.generateItem = async (req, res) => {
 
         ];
     const sex_list = ['M','W'];
-    const brand_list = [1,2,25,35,36,37];
+    // const brand_list = [1,2,25,35,36,37];
     const {iter} = req.params;
     for(let q = 0;q<iter;q++){
-        const name = faker.Name.lastName();
+        const name = faker.Company.companyName();
         const price = Math.floor(Math.random() * 500000)+10000;
         const category1 = Math.floor(Math.random() * 4)+1;
         let category2 = Math.floor(Math.random() * 11)+1;
@@ -43,7 +45,7 @@ exports.generateItem = async (req, res) => {
         const season = Math.floor(Math.random() * 2)+1;
         const style = Math.floor(Math.random() * 12)+1;
         const remain = Math.floor(Math.random() * 3000)-1;
-        const brand_id = brand_list[Math.floor(Math.random() * 6)];
+        const brand_id = Math.floor(Math.random() * 100)+1;
         // const {name,price,category1,category2,category3,
         //     sex,elasticity,quality,thickness,texture,lining,opacity,season,style,remain,images} = req.body;
         // brand_id = req.decoded._id;
@@ -73,4 +75,59 @@ exports.generateItem = async (req, res) => {
     })
 
 };
+
+exports.generateBrand = async (req, res) => {
+    const {iter} = req.params;
+    for(let q = 0;q<iter;q++) {
+        // try {
+            // const { email, password, brand_name, business_number, phone, marketing, styles, is_online_market, online_number } = req.body;
+            const email = faker.Internet.email();
+            const password = faker.Internet.email();
+            const brand_name = faker.Name.firstName();
+            const business_number = Math.floor(Math.random() * 10000000) + 1000000;
+            const phone = faker.PhoneNumber.phoneNumber();
+            const marketing = Math.floor(Math.random() * 2);
+            const is_online_market = Math.floor(Math.random() * 2);
+            let online_number;
+            if (is_online_market === 1) {
+                online_number = Math.floor(Math.random() * 10000000) + 1000000;
+            }
+            const num_styles = Math.floor(Math.random() * 5) + 1;
+            const styles = [];
+            for (let i = 1; i <= 12; i++) {
+                styles.push(0);
+            }
+
+            //hash password
+            const encrypted = crypto.createHmac('sha1', config.secret)
+                .update(password)
+                .digest('base64');
+
+            // const brand = await query.brand.checkDuplicateBrand(email, brand_name);
+            // if (brand.length != 0) {
+            //     return res.status(406).json({
+            //         message: 'brand_name or email already exists'
+            //     })
+            // }
+
+            const createBrand = await query.brand.createBrand(email, encrypted, brand_name, business_number, phone, marketing, is_online_market, online_number);
+            const brand_id = createBrand.insertId;
+
+            for (let i = 0; i < num_styles; i++) {
+                const style = Math.floor(Math.random() * 13) + 1;
+                if (styles[style - 1] === 0) {
+                    const createStyle = await query.brandstyle.createBrandStyle(brand_id, style);
+                    styles[style - 1] = 1;
+
+                }
+            }
+
+        // } catch (err) {
+        //     return res.status(400).json(err);
+        // }
+    }
+    return res.status(200).json({
+        message:"success"
+    })
+}
 
