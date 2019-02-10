@@ -21,13 +21,13 @@ exports.checkDuplicateBrand = (email, brand_name) => {
     })
 }
 
-exports.createBrand = (email, password, brand_name, business_number, phone, marketing, is_online_market, online_number) => {
+exports.createBrand = (email, password, brand_name, business_number, phone, marketing, is_online_market, online_number, image) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO Brand(email, password, brand_name, business_number, phone, marketing, is_online_market, online_number) VALUES(?,?,?,?,?,?,?,?)',
-            [email, password, brand_name, business_number, phone, marketing, is_online_market, online_number],
+        conn.query('INSERT INTO Brand(email, password, brand_name, business_number, phone, marketing, is_online_market, online_number, brand_profile_img) VALUES(?,?,?,?,?,?,?,?,?)',
+            [email, password, brand_name, business_number, phone, marketing, is_online_market, online_number, image],
             (err, result) => {
                 if (err) reject(err);
-                else resolve(result)
+                else resolve(result);
             });
     });
 }

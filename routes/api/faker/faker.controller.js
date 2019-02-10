@@ -82,11 +82,12 @@ exports.generateBrand = async (req, res) => {
         // try {
             // const { email, password, brand_name, business_number, phone, marketing, styles, is_online_market, online_number } = req.body;
             const email = faker.Internet.email();
-            const password = faker.Internet.email();
+            const password = "1234";
             const brand_name = faker.Name.firstName();
             const business_number = Math.floor(Math.random() * 10000000) + 1000000;
             const phone = faker.PhoneNumber.phoneNumber();
             const marketing = Math.floor(Math.random() * 2);
+            const image = faker.Image.fashion();
             const is_online_market = Math.floor(Math.random() * 2);
             let online_number;
             if (is_online_market === 1) {
@@ -110,13 +111,17 @@ exports.generateBrand = async (req, res) => {
             //     })
             // }
 
-            const createBrand = await query.brand.createBrand(email, encrypted, brand_name, business_number, phone, marketing, is_online_market, online_number);
+            const createBrand = await query.brand.createBrand(email, encrypted, brand_name, business_number, phone, marketing, is_online_market, online_number,image);
             const brand_id = createBrand.insertId;
 
             for (let i = 0; i < num_styles; i++) {
+                let main = false;
                 const style = Math.floor(Math.random() * 13) + 1;
                 if (styles[style - 1] === 0) {
-                    const createStyle = await query.brandstyle.createBrandStyle(brand_id, style);
+                    if (i === 0){
+                        main = true;
+                    }
+                    const createStyle = await query.brandstyle.createBrandStyle(brand_id, style, main);
                     styles[style - 1] = 1;
 
                 }
