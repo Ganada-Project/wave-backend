@@ -67,10 +67,10 @@ exports.getMe = async (req, res) => {
         user.styles = styles;
 
 
-        return res.status(200).json({
+        return res.status(200).json(
             user
 
-        });
+        );
     } catch (err) {
         return res.status(400).json(err);
     }
