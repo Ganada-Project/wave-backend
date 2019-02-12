@@ -55,7 +55,7 @@ exports.register = async (req, res) => {
             },
             secret,
             {
-                expiresIn: '7d',
+                expiresIn: '100d',
                 issuer: 'rebay_admin',
                 subject: 'userInfo'
             }, (err, token) => {
@@ -99,7 +99,7 @@ exports.register_brand = async(req, res) => {
             },
             secret,
             {
-                expiresIn: '7d',
+                expiresIn: '100d',
                 issuer: 'rebay_admin',
                 subject: 'brandInfo'
             }, (err, token) => {
@@ -136,7 +136,7 @@ exports.brandLogin = (req, res) => {
                     },
                     secret,
                     {
-                        expiresIn: '7d',
+                        expiresIn: '100d',
                         issuer: 'rebay_admin',
                         subject: 'brandInfo'
                     }, (err, token) => {
@@ -174,7 +174,7 @@ exports.login = (req, res) => {
                     },
                     secret,
                     {
-                        expiresIn: '7d',
+                        expiresIn: '100d',
                         issuer: 'rebay_admin',
                         subject: 'userInfo'
                     }, async(err, token) => {
