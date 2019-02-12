@@ -3,6 +3,72 @@ const jwt = require('jsonwebtoken');
 const faker = require('Faker');
 const crypto = require('crypto');
 const config = require('../../../config');
+exports.generateUser = async (req, res) => {
+
+    //get data
+    // const { sex, nickname, name, phone, password, styles, height, weight, waist, bodyImageBase64, brands } = req.body;
+    const password = "1234";
+
+    //hash password
+    const encrypted = crypto.createHmac('sha1', config.secret)
+        .update(password)
+        .digest('base64');
+
+    //phone number duplicate check
+    const user = await query.user.getUserByPhone(phone);
+    if(user != undefined){
+        return res.status(406).json({
+            message: 'user phone already exists'
+        })
+    }
+
+    //create user
+    const createUser = await query.user.createUser(phone, encrypted);
+    const userId = createUser.insertId;
+
+    //create personal
+    const createPersonal = await query.personal.createPersonal(userId, sex, name, nickname);
+
+    //create body
+    const createBody = await query.body.createBody(userId, height, weight, waist);
+    const bodyId = createBody.insertId;
+
+    // save body image
+    const returnedBodyImageURL = await query.image.uploadImage(bodyImageBase64);
+    const saveBodyImage = await query.body.saveBodyImage(returnedBodyImageURL, bodyId);
+
+    //create styles
+    for(style of styles){
+        const createStyle = await query.userstyle.createStyle(userId, style);
+    }
+
+    //create styles
+    for(brand of brands){
+        const createBrandFollow = await query.brandfollow.createBrandFollow(userId, brand);
+    }
+    jwt.sign(
+        {
+            _id: userId,
+            phone: phone
+        },
+        secret,
+        {
+            expiresIn: '7d',
+            issuer: 'rebay_admin',
+            subject: 'userInfo'
+        }, (err, token) => {
+            if (err) return res.status(406).json({ message:'register failed' });
+            return res.status(200).json({
+                message: 'registered successfully',
+                token
+            });
+        });
+    // }
+    // catch (err) {
+    return res.status(400).json(err);
+    // }
+}
+
 exports.generateItem = async (req, res) => {
     const category2_mask = [1,1,1,2,2,3,4,4,4,4,1];
     const category3_mask =
