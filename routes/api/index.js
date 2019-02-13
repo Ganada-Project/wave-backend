@@ -6,6 +6,7 @@ const user = require('./user');
 const item = require('./item');
 const auth = require('./auth');
 const category = require('./category');
+const brand = require('./brand');
 const feature = require('./feature');
 const faker = require('./faker');
 const authMiddleware = require('../../middlewares/auth');
@@ -27,4 +28,7 @@ router.use('/item', authMiddleware);
 router.use('/item', item);
 router.use('/feature', feature);
 router.use('/faker', faker);
+
+router.use('/brand', authMiddleware);
+router.use('/brand', brand);
 module.exports = router;
