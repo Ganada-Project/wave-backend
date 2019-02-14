@@ -219,17 +219,18 @@ exports.checkNicknameOverlap = async (req, res) => {
 };
 
 exports.checkPhoneNumberOverlap = async (req, res) => {
-    const {phonenumber} = req.body;
-    try {
-        const result = await query.user.getUserByPhone(phonenumber);
-        const overlap = (result !== undefined);
+    // const {phonenumber} = req.body;
+    const array = req.query.array;
+    // try {
+    //     const result = await query.user.getUserByPhone(phonenumber);
+    //     const overlap = (result !== undefined);
         return res.status(200).json({
             // brand_name_overlap: overlap
-            overlap
+            array
         })
-    } catch (err) {
-        return res.status(400).json(err);
-    }
+    // } catch (err) {
+    //     return res.status(400).json(err);
+    // }
 };
 
 exports.checkBrandNameOverlap = async (req, res) => {
