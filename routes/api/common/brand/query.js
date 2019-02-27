@@ -21,10 +21,10 @@ exports.checkDuplicateBrand = (email, brand_name) => {
     })
 }
 
-exports.createBrand = (email, password, brand_name, business_number, phone, marketing, is_online_market, online_number, image) => {
+exports.createBrand = (email, password, brand_name, business_number, phone, marketing, is_online_market, online_number) => {
     return new Promise((resolve, reject) => {
         conn.query('INSERT INTO Brand(email, password, brand_name, business_number, phone, marketing, is_online_market, online_number, brand_profile_img) VALUES(?,?,?,?,?,?,?,?,?)',
-            [email, password, brand_name, business_number, phone, marketing, is_online_market, online_number, image],
+            [email, password, brand_name, business_number, phone, marketing, is_online_market, online_number, null],
             (err, result) => {
                 if (err) reject(err);
                 else resolve(result);
