@@ -109,6 +109,19 @@ exports.getItemById = async (req, res) => {
     }
 }
 
+exports.getMeasureFeatures = async (req, res) => {
+    try {
+        const result = await query.category.getSizeGroupByCategory3Id(req.query.category3_id);
+        return res.status(200).json({
+            result
+        })
+    } catch (err) {
+        return res.status(400).json({
+            err
+        })
+    }
+}
+
 exports.toggleOnSale = async (req, res) => {
     try {
         const item = await query.item.getItemById(req.params.item_id);

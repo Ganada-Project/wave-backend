@@ -84,3 +84,14 @@ exports.getCategory3ById = (id) => {
             });
     });
 };
+
+exports.getSizeGroupByCategory3Id = (id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Item_Category3 as A JOIN SizeGroup as B ON A.`size_group_id` = B.id WHERE A.id = ?',
+            [id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+    })
+}
