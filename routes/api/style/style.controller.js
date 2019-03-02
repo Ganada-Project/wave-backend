@@ -43,13 +43,19 @@ exports.getStyleByUserId = async (req, res) => {
 
 exports.recommendStyleByUserStyle = async (req, res) => {
     const { styles } = req.body;
-    try {
-        const brand_names = await query.style.recommendStyleByUserStyle(styles);
-        const result = brand_names;
+    // try {
+        const brands = await query.style.recommendStyleByUserStyle(styles);
+        for(brand of brands){
+            const items = await query.item.getItemsByBrandId(brand.id);
+            for(item of items){
+                item.image = await query.item.getItemImageByItemId(item.id);
+            }
+            brand.items = items;
+        }
         return res.status(200).json({
-            result
+            brands
         })
-    } catch (err) {
-        return res.status(400).json(err);
-    }
+    // } catch (err) {
+    //     return res.status(400).json(err);
+    // }
 }

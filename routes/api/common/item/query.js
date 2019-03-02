@@ -45,6 +45,19 @@ exports.saveItemImage = (item_id, img_url) =>{
     })
 }
 
+exports.getItemImageByItemId = (item_id) =>{
+    return new Promise((resolve, reject) => {
+        conn.query(
+            "SELECT * FROM Item_Image Where item_id = ?",
+            [item_id],
+            (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            }
+        )
+    })
+}
+
 exports.getItemsByBrandId = (brand_id) =>{
     return new Promise((resolve, reject) => {
         conn.query(
