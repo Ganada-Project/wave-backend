@@ -45,15 +45,24 @@ exports.recommendStyleByUserStyle = async (req, res) => {
     const { styles } = req.body;
     try {
         const brands = await query.style.recommendStyleByUserStyle(styles);
-        for(brand of brands){
+        const result = [];
+        const visited = [];
+        while(true) {
+            const idx = Math.floor(Math.random() * brands.length);
+            const brand = brands[idx];
             const items = await query.item.getItemsByBrandId(brand.id);
-            for(item of items){
+            for (item of items) {
                 item.image = await query.item.getItemImageByItemId(item.id);
             }
             brand.items = items;
+            if(items.length === 0) continue;
+            if(visited.indexOf(idx) !== -1) continue;
+            result.push(brand);
+            visited.push(idx);
+            if(result.length === 5) break;
         }
         return res.status(200).json({
-            brands
+            result
         })
     } catch (err) {
         return res.status(400).json(err);
