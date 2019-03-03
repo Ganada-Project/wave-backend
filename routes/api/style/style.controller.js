@@ -43,7 +43,7 @@ exports.getStyleByUserId = async (req, res) => {
 
 exports.recommendStyleByUserStyle = async (req, res) => {
     const { styles } = req.body;
-    try {
+    // try {
         const brands = await query.style.recommendStyleByUserStyle(styles);
         const result = [];
         const visited = [];
@@ -64,7 +64,7 @@ exports.recommendStyleByUserStyle = async (req, res) => {
         return res.status(200).json({
             result
         })
-    } catch (err) {
-        return res.status(400).json(err);
-    }
+    // } catch (err) {
+    //     return res.status(400).json(err);
+    // }
 }
