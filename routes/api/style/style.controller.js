@@ -1,5 +1,6 @@
 const query = require("../common/query");
-
+const mysql = require('mysql');
+const config = require('../../../config');
 exports.getStyleById = async (req, res) => {
     const {style_id} = req.params;
     try {
@@ -43,16 +44,19 @@ exports.getStyleByUserId = async (req, res) => {
 
 exports.recommendStyleByUserStyle = async (req, res) => {
     const { styles } = req.body;
+    const conn = mysql.createConnection(config);
+    conn.beginTransaction(async(err) => {
+        if (err) return res.staut(400).json({err});
     try {
-        const brands = await query.style.recommendStyleByUserStyle(styles);
+        const brands = await query.style.recommendStyleByUserStyle(conn, styles);
         const result = [];
         const visited = [];
         while(true) {
             const idx = Math.floor(Math.random() * brands.length);
             const brand = brands[idx];
-            const items = await query.item.getItemsByBrandId(brand.id);
+            const items = await query.item.getItemsByBrandId(conn,brand.id);
             for (item of items) {
-                item.image = await query.item.getItemImageByItemId(item.id);
+                item.image = await query.item.getItemImageByItemId(conn,item.id);
             }
             brand.items = items;
             if(items.length === 0) continue;
@@ -61,10 +65,14 @@ exports.recommendStyleByUserStyle = async (req, res) => {
             visited.push(idx);
             if(result.length === 5) break;
         }
+        conn.commit();
+        conn.end();
         return res.status(200).json({
             result
         })
     } catch (err) {
+        conn.end();
         return res.status(400).json(err);
     }
+    });
 }

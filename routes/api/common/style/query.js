@@ -22,7 +22,7 @@ exports.getAllStyles = () => {
 }
 
 
-exports.recommendStyleByUserStyle = (styles) => {
+exports.recommendStyleByUserStyle = (conn, styles) => {
     return new Promise((resolve, reject) => {
         sql = "SELECT * FROM Brand JOIN BrandStyle ON Brand.id = BrandStyle.brand_id WHERE main = 1 and (style_id = " + styles[0];
         for(let i = 0; i < styles.length; i++) {
@@ -31,7 +31,10 @@ exports.recommendStyleByUserStyle = (styles) => {
         conn.query(
             sql+")",
             (err, result) => {
-                if (err) reject(err);
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
                 else resolve(result);
             }
         )
