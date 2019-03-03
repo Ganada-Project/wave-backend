@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const config = require('../../../../config');
-const conn = mysql.createConnection(config);
+// const conn = mysql.createConnection(config);
 
 
 exports.getMeasurePreset = () => {
@@ -12,12 +12,15 @@ exports.getMeasurePreset = () => {
     });
 }
 
-exports.createItem = (brand_id, sex, category_id, style_id, feature_id,name,price,season) => {
+exports.createItem = (conn, brand_id, sex, category_id, style_id, feature_id,name,price,season) => {
     return new Promise((resolve, reject) => {
         conn.query('INSERT INTO Item(brand_id, sex, category_id, style_id, feature_id,name,price,season_id) VALUES(?,?,?,?,?,?,?,?)',
             [brand_id, sex, category_id, style_id, feature_id,name, price,season],
             (err, result) => {
-                if (err) reject(err);
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
                 else resolve(result)
             });
     });
@@ -32,13 +35,16 @@ exports.getItemById = (id) => {
     });
 }
 
-exports.saveItemImage = (item_id, img_url) =>{
+exports.saveItemImage = (conn, item_id, img_url) =>{
     return new Promise((resolve, reject) => {
         conn.query(
             "INSERT INTO Item_Image(img_url, item_id) VALUES(?, ?)",
             [img_url, item_id],
             (err, result) => {
-                if (err) reject(err);
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
                 else resolve(result);
             }
         )
