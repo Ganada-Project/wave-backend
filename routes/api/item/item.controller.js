@@ -5,6 +5,10 @@ const config = require('../../../config');
 exports.createItem = async (req, res) => {
     const {name,price,category1,category2,category3,
         sex,elasticity,quality,thickness,texture,lining,opacity,season,style,remain,images} = req.body;
+    
+    // Check if logged user is brand
+    if (req.decoded.sub !== "brandInfo") return res.status(406).json({ message: "NOT BRAND" })
+    
     brand_id = req.decoded._id;
     const conn = mysql.createConnection(config);
    
@@ -24,12 +28,14 @@ exports.createItem = async (req, res) => {
                 let image_url = await query.image.uploadImage(images[i]);
                 let result = await query.item.saveItemImage(conn, item_id, image_url);
             }
-
+            conn.commit();
+            conn.end();
             return res.status(200).json({
                 message: "success",
                 id: item_id
             }) 
         } catch (err) {
+            conn.end();
             return res.status(400).json(err);
         }
     });
@@ -40,18 +46,27 @@ exports.createSize = async (req, res) => {
     const {height,waist,chest,arm,shoulder,thigh,hip,leg,name,item_id,
         height_measure,waist_measure,chest_measure,arm_measure,shoulder_measure,
         thigh_measure,hip_measure,leg_measure,remain} = req.body;
-    try {
+    
+    const conn = mysql.createConnection(config);
 
-        size = await query.size.createSize(height,waist,chest,arm,shoulder,thigh,hip,leg,name,item_id,remain);
-        measure = await query.sizemeasure.createSizeMeasure(height_measure,waist_measure,chest_measure,
-            arm_measure,shoulder_measure,thigh_measure,hip_measure,leg_measure,size.insertId);
+    conn.beginTransaction(async (err) => {
+        if (err) return res.staut(400).json(err);
 
-        return res.status(200).json({
-            message:"success"
-        })
-    } catch (err) {
-        return res.status(400).json(err);
-    }
+        try {
+            size = await query.size.createSize(conn, height, waist, chest, arm, shoulder, thigh, hip, leg, name, item_id, remain);
+            measure = await query.sizemeasure.createSizeMeasure(conn,height_measure, waist_measure, chest_measure,
+                arm_measure, shoulder_measure, thigh_measure, hip_measure, leg_measure, size.insertId);
+            
+            conn.commit();
+            conn.end();
+            return res.status(200).json({
+                message: "success"
+            })
+        } catch (err) {
+            conn.end();
+            return res.status(400).json(err);
+        }
+    });
 }
 
 exports.getItemsByBrandId = async (req, res) => {

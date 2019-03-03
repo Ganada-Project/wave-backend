@@ -41,7 +41,9 @@ exports.createCategory = (conn, category1, category2, category3) => {
                     conn.rollback();
                     reject(err);
                 }
-                else resolve(result)
+                else {
+                    resolve(result);
+                }
             });
     });
 };
