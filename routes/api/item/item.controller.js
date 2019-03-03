@@ -47,6 +47,9 @@ exports.createSize = async (req, res) => {
         height_measure,waist_measure,chest_measure,arm_measure,shoulder_measure,
         thigh_measure,hip_measure,leg_measure,remain} = req.body;
     
+    // Check if logged user is brand
+    if (req.decoded.sub !== "brandInfo") return res.status(406).json({ message: "NOT BRAND" })
+    
     const conn = mysql.createConnection(config);
 
     conn.beginTransaction(async (err) => {
