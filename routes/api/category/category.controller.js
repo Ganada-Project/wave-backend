@@ -1,15 +1,20 @@
 const query = require("../common/query");
-
+const mysql = require('mysql');
+const config = require('../../../config');
 exports.getCategory1 = async (req, res) => {
+    const conn = mysql.createConnection(config);
 
-    try {
-        category1 = await query.category.getCategory1();
-        return res.status(200).json({
-            category1
-        })
-    } catch (err) {
-        return res.status(400).json(err);
-    }
+    conn.beginTransaction(async(err) => {
+        if (err) return res.staut(400).json({err});
+        try {
+            category1 = await query.category.getCategory1(conn);
+            return res.status(200).json({
+                category1
+            })
+        } catch (err) {
+            return res.status(400).json(err);
+        }
+    });
 };
 
 exports.getCategory2 = async (req, res) => {

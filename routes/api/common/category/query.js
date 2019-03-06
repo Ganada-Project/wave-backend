@@ -2,10 +2,13 @@ const mysql = require('mysql');
 const config = require('../../../../config');
 const conn = mysql.createConnection(config);
 
-exports.getCategory1 = () => {
+exports.getCategory1 = (conn) => {
     return new Promise((resolve, reject) => {
         conn.query(`SELECT * FROM Item_Category1`, (err, result) => {
-            if (err) reject(err);
+            if (err) {
+                conn.rollback();
+                reject(err);
+            }
             else resolve(result);
         });
     });
