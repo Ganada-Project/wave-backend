@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const config = require('../../../../config');
+const conn = mysql.createConnection(config);
 
 exports.getCategory1 = () => {
     return new Promise((resolve, reject) => {
