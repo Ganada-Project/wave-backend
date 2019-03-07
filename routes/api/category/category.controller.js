@@ -33,15 +33,15 @@ exports.getCategory2 = async (req, res) => {
 
 exports.getCategory3 = async (req, res) => {
     const {parent_id} = req.params;
-    // try {
+    try {
     category3 = await query.category.getCategory3ByParentId(parent_id);
     await res.status(200).json({
         category3
     })
-    // } catch (err) {
+    } catch (err) {
     return res.status(406).json({
         err
     })
-    // }
+    }
 }
 
