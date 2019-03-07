@@ -4,7 +4,6 @@ const mysql = require('mysql');
 const config = require('../../../config');
 const conn = mysql.createConnection(config);
 const query = require('../common/query');
-
 exports.register = async (req, res) => {
     // try{
         const secret = req.app.get('jwt-secret');
@@ -189,6 +188,53 @@ exports.login = (req, res) => {
         }
     )
 };
+
+exports.getUserToken = (req, res) => {
+
+    const secret = req.app.get('jwt-secret');
+    jwt.sign(
+        {
+            _id: 23,
+            email: "best@gmail.com"
+        },
+        secret,
+        {
+            expiresIn: '100d',
+            issuer: 'rebay_admin',
+            subject: 'userInfo'
+        }, async (err, token) => {
+            if (err) return res.status(406).json({ message: 'login failed' });
+            // await query.renewFcmtoken(result[0].id, fcm_token);
+            return res.status(200).json({
+                message: 'logged in successfully',
+                token
+            });
+        });
+}
+
+exports.getBrandToken = (req, res) => {
+
+    const secret = req.app.get('jwt-secret');
+    jwt.sign(
+        {
+            _id: 109,
+            email: "julian@gmail.com"
+        },
+        secret,
+        {
+            expiresIn: '100d',
+            issuer: 'rebay_admin',
+            subject: 'brandInfo'
+        }, async (err, token) => {
+            if (err) return res.status(406).json({ message: 'login failed' });
+            // await query.renewFcmtoken(result[0].id, fcm_token);
+            return res.status(200).json({
+                message: 'logged in successfully',
+                token
+            });
+        });
+}
+
 
 exports.getVerificationSMS = async (req, res) => {
     let random_verify = Math.floor(1000 + Math.random() * 9000);

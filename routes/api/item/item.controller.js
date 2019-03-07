@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const config = require('../../../config');
 exports.createItem = async (req, res) => {
     const {name,price,category1,category2,category3,
-        sex,elasticity,quality,thickness,texture,lining,opacity,season,style,remain,images} = req.body;
+        sex,elasticity,quality_arr,thickness,texture,lining,opacity,season,style,remain,images} = req.body;
     
     // Check if logged user is brand
     if (req.decoded.sub !== "brandInfo") return res.status(406).json({ message: "NOT BRAND" })
@@ -16,7 +16,8 @@ exports.createItem = async (req, res) => {
         if (err) return res.staut(400).json({err});
         try {
             category = await query.category.createCategory(conn, category1, category2, category3);
-            feature = await query.feature.createFeature(conn, elasticity, quality, thickness, texture, lining, opacity);
+            quality = await query.feature.createQualityArray(conn, quality_arr);
+            feature = await query.feature.createFeature(conn, elasticity, quality.insertId, thickness, texture, lining, opacity);
             // size = await query.size.createSize(1,1,1,1,1,1,1,1,"L");
             category_id = category.insertId;
             feature_id = feature.insertId;

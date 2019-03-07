@@ -76,8 +76,9 @@ exports.getSeason = () => {
     });
 }
 
-exports.createFeature = (conn, quality,thickness,elasticity,texture,lining,opacity) => {
+exports.createFeature = (conn, elasticity, quality, thickness, texture, lining, opacity) => {
     return new Promise((resolve, reject) => {
+        
         conn.query('INSERT INTO Feature(quality_id,thickness_id,elasticity_id,texture_id,lining_id,opacity_id) VALUES(?,?,?,?,?,?)',
             [quality,thickness,elasticity,texture,lining,opacity],
             (err, result) => {
@@ -87,5 +88,25 @@ exports.createFeature = (conn, quality,thickness,elasticity,texture,lining,opaci
                 }
                 else resolve(result)
             });
+    });
+}
+
+exports.createQualityArray = (conn, quality) => {
+    return new Promise((resolve, reject) => {
+        let quality_arr = "";
+        for (let i = 0; i < quality.length; i++) {
+            quality_arr += quality[i] + "/";
+        }
+        conn.query(
+            "INSERT INTO Feature_Quality(quality_arr) VALUES(?)",
+            [quality_arr],
+            (err, result) => {
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
+                else resolve(result);
+            }
+        )
     });
 }
