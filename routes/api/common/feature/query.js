@@ -95,7 +95,7 @@ exports.createQualityArray = (conn, quality) => {
     return new Promise((resolve, reject) => {
         let quality_arr = "";
         for (let i = 0; i < quality.length; i++) {
-            quality_arr += quality[i] + "/";
+            quality_arr += "(" + quality[i].id + "," + quality[i].value + ")";
         }
         conn.query(
             "INSERT INTO Feature_Quality(quality_arr) VALUES(?)",
