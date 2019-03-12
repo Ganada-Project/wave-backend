@@ -14,23 +14,29 @@ exports.getCategory1 = (conn) => {
     });
 };
 
-exports.getCategory2ByParentId = (parent_id) => {
+exports.getCategory2ByParentId = (conn, parent_id) => {
     return new Promise((resolve, reject) => {
         conn.query('SELECT * FROM Item_Category2 WHERE parent_id = ?',
             [parent_id],
             (err, result) => {
-                if (err) reject(err);
+                if (err){
+                    conn.rollback();
+                    reject(err);
+                }
                 else resolve(result);
             });
     });
 };
 
-exports.getCategory3ByParentId = (parent_id) => {
+exports.getCategory3ByParentId = (conn, parent_id) => {
     return new Promise((resolve, reject) => {
         conn.query('SELECT * FROM Item_Category3 WHERE parent_id = ?',
             [parent_id],
             (err, result) => {
-                if (err) reject(err);
+                if (err){
+                    conn.rollback();
+                    reject(err);
+                }
                 else resolve(result);
             });
     });
