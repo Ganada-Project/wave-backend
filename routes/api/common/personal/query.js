@@ -12,12 +12,15 @@ exports.getPersonalByNickname = (nickname) => {
     });
 }
 
-exports.createPersonal = (userId, sex, name, nickname, phone) => {
+exports.createPersonal = (conn, userId, sex, name, nickname, phone) => {
     return new Promise((resolve, reject) => {
         conn.query('INSERT INTO Personal(user_id, sex, name, nickname) VALUES(?,?,?,?)',
             [userId, sex, name, nickname],
             (err, result) => {
-                if (err) reject(err);
+                if (err){
+                    conn.rollback();
+                    reject(err);
+                }
                 else resolve(result)
             });
     });

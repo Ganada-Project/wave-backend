@@ -8,12 +8,15 @@ const fetch = require('node-fetch');
 const { Image, createCanvas } = require('canvas');
 // const posenet = require('@tensorflow-models/posenet');
 
-exports.createBody = (userId, height, weight, waist) => {
+exports.createBody = (conn, userId, height, weight, waist) => {
     return new Promise((resolve, reject) => {
         conn.query('INSERT INTO Body(user_id, height, weight, waist) VALUES(?,?,?,?)',
             [userId, height, weight, waist],
             (err, result) => {
-                if (err) reject(err);
+                if (err){
+                    conn.rollback();
+                    reject(err);
+                }
                 else resolve(result)
             });
     });
@@ -41,12 +44,15 @@ exports.getBodyByUserId = (userId) => {
     });
 }
 
-exports.saveBodyImage = (imgURL, bodyId) => {
+exports.saveBodyImage = (conn, imgURL, bodyId) => {
     return new Promise((resolve, reject) => {
         conn.query('INSERT INTO BodyImage(img_url, body_id) VALUES(?,?)',
             [imgURL, bodyId],
             (err, result) => {
-                if (err) reject(err);
+                if (err){
+                    conn.rollback();
+                    reject(err);
+                }
                 else resolve(result)
             });
     });

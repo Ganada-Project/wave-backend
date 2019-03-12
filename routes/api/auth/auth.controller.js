@@ -5,69 +5,74 @@ const config = require('../../../config');
 const conn = mysql.createConnection(config);
 const query = require('../common/query');
 exports.register = async (req, res) => {
-    try{
-        const secret = req.app.get('jwt-secret');
-        //get data
-        const { sex, nickname, name, phone, password, styles, height, weight, waist, bodyImageBase64, brands } = req.body;
+    const conn = mysql.createConnection(config);
+    conn.beginTransaction(async(err) => {
+        if (err) return res.status(400).json({err});
+        try{
+            const secret = req.app.get('jwt-secret');
+            //get data
+            const { sex, nickname, name, phone, password, styles, height, weight, waist, bodyImageBase64, brands } = req.body;
 
-        //hash password
-        const encrypted = crypto.createHmac('sha1', config.secret)
-            .update(password)
-            .digest('base64');
+            //hash password
+            const encrypted = crypto.createHmac('sha1', config.secret)
+                .update(password)
+                .digest('base64');
 
-        //phone number duplicate check
-        const user = await query.user.getUserByPhone(phone);
-        if(user != undefined){
-            return res.status(406).json({
-                message: 'user phone already exists'
-            })
-        }
+            //phone number duplicate check
+            const user = await query.user.getUserByPhone(conn, phone);
+            if(user != undefined){
+                return res.status(406).json({
+                    message: 'user phone already exists'
+                })
+            }
 
-        //create user
-        const createUser = await query.user.createUser(phone, encrypted);
-        const userId = createUser.insertId;
+            //create user
+            const createUser = await query.user.createUser(conn, phone, encrypted);
+            const userId = createUser.insertId;
 
-        //create personal
-        const createPersonal = await query.personal.createPersonal(userId, sex, name, nickname);
+            //create personal
+            const createPersonal = await query.personal.createPersonal(conn, userId, sex, name, nickname);
 
-        //create body
-        const createBody = await query.body.createBody(userId, height, weight, waist);
-        const bodyId = createBody.insertId;
+            //create body
+            const createBody = await query.body.createBody(conn, userId, height, weight, waist);
+            const bodyId = createBody.insertId;
 
-        // save body image
-        const returnedBodyImageURL = await query.image.uploadImage(bodyImageBase64);
-        const saveBodyImage = await query.body.saveBodyImage(returnedBodyImageURL, bodyId);
+            // save body image
+            const returnedBodyImageURL = await query.image.uploadImage(bodyImageBase64);
+            const saveBodyImage = await query.body.saveBodyImage(conn, returnedBodyImageURL, bodyId);
 
-        //create styles
-        for(style of styles){
-            const createStyle = await query.userstyle.createStyle(userId, style);
-        }
-
-        //create styles
-        for(brand of brands){
-            const createBrandFollow = await query.brandfollow.createBrandFollow(userId, brand);
-        }
-        jwt.sign(
-            {
-                _id: userId,
-                phone: phone
-            },
-            secret,
-            {
-                expiresIn: '100d',
-                issuer: 'rebay_admin',
-                subject: 'userInfo'
-            }, (err, token) => {
-                if (err) return res.status(406).json({ message:'register failed' });
-                return res.status(200).json({
-                    message: 'registered successfully',
-                    token
+            //create styles
+            for(style of styles){
+                const createStyle = await query.userstyle.createStyle(conn, userId, style);
+            }
+            //create styles
+            for(brand of brands){
+                const createBrandFollow = await query.brandfollow.createBrandFollow(conn, userId, brand);
+            }
+            jwt.sign(
+                {
+                    _id: userId,
+                    phone: phone
+                },
+                secret,
+                {
+                    expiresIn: '100d',
+                    issuer: 'rebay_admin',
+                    subject: 'userInfo'
+                }, (err, token) => {
+                    if (err) return res.status(406).json({ message:'register failed' });
+                    conn.commit();
+                    conn.end();
+                    return res.status(200).json({
+                        message: 'registered successfully',
+                        token
+                    });
                 });
-            });
-    }
-    catch (err) {
-        return res.status(400).json(err);
-    }
+        }
+        catch (err) {
+            return res.status(400).json(err);
+        }
+    });
 }
 
 exports.register_brand = async(req, res) => {

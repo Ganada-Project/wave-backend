@@ -8,22 +8,30 @@ const conn = mysql.createConnection(config);
 // const crypto = require('crypto');
 // const https = require("https");
 
-exports.getUserByPhone = (phone) => {
+exports.getUserByPhone = (conn, phone) => {
     return new Promise((resolve, reject) => {
         conn.query(`SELECT * FROM User WHERE phone = '${phone}'`, (err, result) => {
-            if (err) reject(err);
-            else resolve(result[0])
+            if (err){
+                conn.rollback();
+                reject(err);
+            }
+            else {
+                resolve(result[0]);
+            }
         });
     });
 }
 
-exports.createUser = (phone,password) => {
+exports.createUser = (conn, phone, password) => {
     return new Promise((resolve, reject) => {
         conn.query('INSERT INTO User(phone, password) VALUES(?,?)',
             [phone, password],
             (err, result) => {
-                if (err) reject(err);
-                else resolve(result)
+                if (err){
+                    conn.rollback();
+                    reject(err);
+                }
+                else resolve(result);
             });
     });
 }
@@ -34,7 +42,7 @@ exports.getUserById = (id) => {
             [id],
             (err, result) => {
                 if (err) reject(err);
-                else resolve(result[0])
+                else resolve(result[0]);
             });
     });
 }
