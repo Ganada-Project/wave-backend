@@ -110,3 +110,18 @@ exports.createQualityArray = (conn, quality) => {
         )
     });
 }
+
+exports.getAllQualities = (conn) => {
+    return new Promise((resolve, reject) => {
+        conn.query(
+            "SELECT * FROM Quality",
+            (err, result) => {
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
+                else resolve(result);
+            }
+        )
+    });
+}

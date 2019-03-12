@@ -1,6 +1,10 @@
 const query = require("../common/query");
+const mysql = require('mysql');
+const config = require('../../../config');
 
 exports.getAllFeatures = async (req, res) => {
+
+    const conn = mysql.createConnection(config);
 
     try {
         elasticity = await query.feature.getElasticity();
@@ -10,7 +14,8 @@ exports.getAllFeatures = async (req, res) => {
         texture = await query.feature.getTexture();
         thickness = await query.feature.getThickness();
         season = await query.feature.getSeason();
-
+        conn.commit();
+        conn.end();
         return res.status(200).json({
             elasticity,
             lining,
@@ -21,9 +26,26 @@ exports.getAllFeatures = async (req, res) => {
             season
         })
     } catch (err) {
+        conn.commit();
+        conn.end();
         return res.status(400).json(err);
     }
 };
 
+exports.getAllQualities = async (req, res) => {
 
+    const conn = mysql.createConnection(config);
 
+    try {
+        qualities = await query.feature.getAllQualities(conn);
+        conn.commit();
+        conn.end();
+        return res.status(200).json({
+            qualities
+        })
+    } catch (err) {
+        conn.commit();
+        conn.end();
+        return res.status(400).json({err});
+    }
+}
