@@ -158,7 +158,7 @@ exports.brandLogin = (req, res) => {
 }
 
 exports.login = (req, res) => {
-    const { phone, password, fcm_token } = req.body;
+    const { phone, password } = req.body;
     // console.log(email,password,config.secret);
     const secret = req.app.get('jwt-secret');
     const encrypted = crypto.createHmac('sha1', config.secret)
@@ -176,7 +176,7 @@ exports.login = (req, res) => {
                 jwt.sign(
                     {
                         _id: result[0].id,
-                        email: result[0].email
+                        phone: result[0].phone
                     },
                     secret,
                     {

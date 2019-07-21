@@ -10,7 +10,7 @@ router.get('/check/phone', controller.checkPhoneNumberOverlap);
 // router.get('/phone', controller.getVerificationSMS);
 // router.post('/check/nickname', controller.checkNicknameOverlap);
 // router.post('/login/brand', controller.brandLogin);
-// router.post('/login/user', controller.login);
+router.post('/login', controller.login);
 
 // router.get('/token/user', controller.getUserToken);
 // router.get('/token/brand', controller.getBrandToken);
