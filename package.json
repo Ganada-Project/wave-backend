@@ -11,7 +11,6 @@
     "aws-sdk": "^2.203.0",
     "babel-register": "^6.26.0",
     "body-parser": "~1.17.1",
-    "canvas": "^2.1.0",
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
