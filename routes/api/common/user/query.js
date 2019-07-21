@@ -22,10 +22,10 @@ exports.getUserByPhone = (phone) => {
     });
 }
 
-exports.createUser = (conn, phone, password, name, age, gender) => {
+exports.createUser = (conn, phone, password, name, age, gender, fcm) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO User(phone, password, name, age, gender) VALUES(?,?,?,?,?)',
-            [phone, password, name, age, gender],
+        conn.query('INSERT INTO User(phone, password, name, age, gender, fcm) VALUES(?,?,?,?,?,?)',
+            [phone, password, name, age, gender, fcm],
             (err, result) => {
                 if (err){
                     conn.rollback();

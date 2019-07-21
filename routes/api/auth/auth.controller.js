@@ -13,7 +13,7 @@ exports.register = async (req, res) => {
             const secret = req.app.get('jwt-secret');
             
             //get data
-            const { phone, password, name, age, gender } = req.body;
+            const { phone, password, name, age, gender, fcm } = req.body;
 
             //hash password
             const encrypted = crypto.createHmac('sha1', config.secret)
@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
             }
 
             //create user
-            const createUser = await query.user.createUser(conn, phone, encrypted, name, age, gender);
+            const createUser = await query.user.createUser(conn, phone, encrypted, name, age, gender, fcm);
             const userId = createUser.insertId;
 
             // //create personal
