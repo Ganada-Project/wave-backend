@@ -8,7 +8,7 @@ const conn = mysql.createConnection(config);
 // const crypto = require('crypto');
 // const https = require("https");
 
-exports.getUserByPhone = (conn, phone) => {
+exports.getUserByPhone = (phone) => {
     return new Promise((resolve, reject) => {
         conn.query(`SELECT * FROM User WHERE phone = '${phone}'`, (err, result) => {
             if (err){
@@ -22,10 +22,10 @@ exports.getUserByPhone = (conn, phone) => {
     });
 }
 
-exports.createUser = (conn, phone, password) => {
+exports.createUser = (conn, phone, password, name, age, gender) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO User(phone, password) VALUES(?,?)',
-            [phone, password],
+        conn.query('INSERT INTO User(phone, password, name, age, gender) VALUES(?,?,?,?,?)',
+            [phone, password, name, age, gender],
             (err, result) => {
                 if (err){
                     conn.rollback();

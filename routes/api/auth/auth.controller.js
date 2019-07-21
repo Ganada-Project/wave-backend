@@ -4,14 +4,16 @@ const mysql = require('mysql');
 const config = require('../../../config');
 const conn = mysql.createConnection(config);
 const query = require('../common/query');
+
 exports.register = async (req, res) => {
     const conn = mysql.createConnection(config);
     conn.beginTransaction(async(err) => {
         if (err) return res.status(400).json({err});
         try{
             const secret = req.app.get('jwt-secret');
+            
             //get data
-            const { sex, nickname, name, phone, password, styles, height, weight, waist, bodyImageBase64, brands } = req.body;
+            const { phone, password, name, age, gender } = req.body;
 
             //hash password
             const encrypted = crypto.createHmac('sha1', config.secret)
@@ -27,28 +29,28 @@ exports.register = async (req, res) => {
             }
 
             //create user
-            const createUser = await query.user.createUser(conn, phone, encrypted);
+            const createUser = await query.user.createUser(conn, phone, encrypted, name, age, gender);
             const userId = createUser.insertId;
 
-            //create personal
-            const createPersonal = await query.personal.createPersonal(conn, userId, sex, name, nickname);
+            // //create personal
+            // const createPersonal = await query.personal.createPersonal(conn, userId, sex, name, nickname);
 
-            //create body
-            const createBody = await query.body.createBody(conn, userId, height, weight, waist);
-            const bodyId = createBody.insertId;
+            // //create body
+            // const createBody = await query.body.createBody(conn, userId, height, weight, waist);
+            // const bodyId = createBody.insertId;
 
-            // save body image
-            const returnedBodyImageURL = await query.image.uploadImage(bodyImageBase64);
-            const saveBodyImage = await query.body.saveBodyImage(conn, returnedBodyImageURL, bodyId);
+            // // save body image
+            // const returnedBodyImageURL = await query.image.uploadImage(bodyImageBase64);
+            // const saveBodyImage = await query.body.saveBodyImage(conn, returnedBodyImageURL, bodyId);
 
             //create styles
-            for(style of styles){
-                const createStyle = await query.userstyle.createStyle(conn, userId, style);
-            }
-            //create styles
-            for(brand of brands){
-                const createBrandFollow = await query.brandfollow.createBrandFollow(conn, userId, brand);
-            }
+            // for(style of styles){
+            //     const createStyle = await query.userstyle.createStyle(conn, userId, style);
+            // }
+            // //create styles
+            // for(brand of brands){
+            //     const createBrandFollow = await query.brandfollow.createBrandFollow(conn, userId, brand);
+            // }
             jwt.sign(
                 {
                     _id: userId,
@@ -270,15 +272,14 @@ exports.checkNicknameOverlap = async (req, res) => {
 };
 
 exports.checkPhoneNumberOverlap = async (req, res) => {
-    const {phonenumber} = req.body;
     try {
-        const result = await query.user.getUserByPhone(phonenumber);
+        const result = await query.user.getUserByPhone(req.query.phone);
         const overlap = (result !== undefined);
         return res.status(200).json({
-            brand_name_overlap: overlap
+            isOverlap: overlap
         })
     } catch (err) {
-        return res.status(400).json(err);
+        return res.status(400).json(err.message);
     }
 };
 
