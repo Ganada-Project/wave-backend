@@ -55,7 +55,6 @@ exports.measureSize = (height, body_points) => {
         chest,
         arm,
         waist,
-        height,
         hip,
         crotch,
         thigh,
