@@ -9,9 +9,9 @@ const conn = mysql.createConnection(config);
 // const https = require("https");
 
 
-exports.createSize= (conn,height,waist,chest,arm,shoulder,thigh,hip,leg,name,item_id, remain) => {
+exports.createSize= (conn,card_id,shoulder,chest,arm,waist,height,hip,crotch,thigh,leg) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO Size(height,waist,chest,arm,shoulder,thigh,hip,leg,name,item_id,remain)' +
+        conn.query('INSERT INTO Size(card_id,shoulder,chest,arm,waist,height,hip,crotch,thigh,leg)' +
             ' VALUES(?,?,?,?,?,?,?,?,?,?,?)',
             [height,waist,chest,arm,shoulder,thigh,hip,leg,name,item_id,remain],
             (err, result) => {
