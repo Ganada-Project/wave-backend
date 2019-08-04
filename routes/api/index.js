@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const card = require('./card');
 const style = require('./style');
 const test = require('./test');
 const user = require('./user');
@@ -31,4 +32,8 @@ router.use('/faker', faker);
 
 router.use('/brand', authMiddleware);
 router.use('/brand', brand);
+
+router.use('/card', authMiddleware);
+router.use('/card', card);
+
 module.exports = router;
