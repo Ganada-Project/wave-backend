@@ -2,37 +2,37 @@ const mysql = require('mysql');
 const config = require('../../../../config');
 const conn = mysql.createConnection(config);
 
-// Height: headOffset.y -  leftFootOffset.y
-// Shoulder: leftShoulderOffset - RightShoulderOffset
-// Chest: leftChestOffset - RightChestOffset
-// Waist: leftWaistOffset - RightWaistOffset
-// Arm: Euclidean(rightShoulderOffset, rightElbowOffset) + Euclidean(rightElbowOffset, rightHandOffset)
-// Hip: leftPelvisOffset - rightPelvisOffset
-// Crotch: pelvisOffset.y - thighOffset.y
-// Thigh: (leftThighOffset - rightThighOffset)/2
-// Leg: Euclidean(leftThighOffset, leftAncleOffset)
+// Height: head.y -  leftFoot.y
+// Shoulder: leftShoulder - RightShoulder
+// Chest: leftChest - RightChest
+// Waist: leftWaist - RightWaist
+// Arm: Euclidean(rightShoulder, rightElbow) + Euclidean(rightElbow, rightHand)
+// Hip: leftPelvis - rightPelvis
+// Crotch: pelvis.y - thigh.y
+// Thigh: (leftThigh - rightThigh)/2
+// Leg: Euclidean(leftThigh, leftAncle)
 
 // body_points: [
-//     { …headOffset },
-//     { …footOffset },
-//     { …leftNeckOffset },
-//     { …leftShulderOffset },
-//     { …leftElbowOffset },
-//     { …leftHandOffset },
-//     { …rightNeckOffset },
-//     { …rightShulderOffset },
-//     { …rightElbowOffset },
-//     { …rightHandOffset },
-//     { …leftChestOffset },
-//     { …leftWaistOffset },
-//     { …leftPelvisOffset },
-//     { …rightChestOffset },
-//     { …rightWaistOffset },
-//     { …rightPelvisOffset },
-//     { …leftThighOffset },
-//     { …leftAnkleOffset },
-//     { …rightThighOffset },
-//     { …rightAnkleOffset },
+//     { …head },
+//     { …foot },
+//     { …leftNeck },
+//     { …leftShulder },
+//     { …leftElbow },
+//     { …leftHand },
+//     { …rightNeck },
+//     { …rightShulder },
+//     { …rightElbow },
+//     { …rightHand },
+//     { …leftChest },
+//     { …leftWaist },
+//     { …leftPelvis },
+//     { …rightChest },
+//     { …rightWaist },
+//     { …rightPelvis },
+//     { …leftThigh },
+//     { …leftAnkle },
+//     { …rightThigh },
+//     { …rightAnkle },
 //   ],
 
 function Euclidean(Point1, Point2) {
@@ -40,15 +40,16 @@ function Euclidean(Point1, Point2) {
 }
 // shoulder,chest,arm,waist,height,hip,crotch,thigh,leg
 exports.measureSize = (height, body_points) => {
-    height_ratio = height / (body_points.headOffset.y -  body_points.leftFootOffset.y)
-    shoulder = (body_points.leftShoulderOffset.x - body_points.rightShoulderOffset.x)*height_ratio
-    chest = (body_points.leftChestOffset.x - body_points.RightChestOffset.x)*height_ratio
-    arm = Euclidean(body_points.rightShoulderOffset, body_points.rightElbowOffset) + Euclidean(body_points.rightElbowOffset, body_points.rightHandOffset)
-    waist = body_points.leftWaistOffset.x - body_points.RightWaistOffset.x
-    hip = body_points.leftPelvisOffset.x - body_points.rightPelvisOffset.x
-    crotch = body_points.pelvisOffset.y - body_points.thighOffset.y
-    thigh = (body_points.leftThighOffset.x - body_points.rightThighOffset.x)/2
-    leg = Euclidean(body_points.leftThighOffset, body_points.leftAncleOffset)
+    console.log(body_points)
+    height_ratio = height / (body_points.head.y -  body_points.foot.y)
+    shoulder = Math.abs((body_points.leftShoulder.x - body_points.rightShoulder.x)*height_ratio)
+    chest = Math.abs((body_points.leftChest.x - body_points.rightChest.x)*height_ratio)
+    arm = Euclidean(body_points.rightShoulder, body_points.rightElbow) + Euclidean(body_points.rightElbow, body_points.rightHand)
+    waist = Math.abs(body_points.leftWaist.x - body_points.rightWaist.x)
+    hip = Math.abs(body_points.leftPelvis.x - body_points.rightPelvis.x)
+    crotch = Math.abs(body_points.leftPelvis.y - body_points.leftThigh.y)
+    thigh = Math.abs((body_points.leftThigh.x - body_points.rightThigh.x)/2)
+    leg = Euclidean(body_points.leftThigh, body_points.leftAnkle)
     
     measure = {
         shoulder,

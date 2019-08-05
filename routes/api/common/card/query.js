@@ -9,11 +9,11 @@ const conn = mysql.createConnection(config);
 // const https = require("https");
 
 
-exports.createCard = (conn,user_id,size_id,name,age,gender,body_shape,height,weight,prefer_color,prefer_style,prefer_size) => {
+exports.createCard = (conn,user_id,size_id,name,age,gender,body_shape,prefer_color,prefer_style,prefer_size) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO Size(user_id,size_id,name,age,gender,body_shape,height,weight,prefer_color,prefer_style,prefer_size)' +
-            ' VALUES(?,?,?,?,?,?,?,?,?,?,?)',
-            [user_id,size_id,name,age,gender,body_shape,height,weight,prefer_color,prefer_style,prefer_size],
+        conn.query('INSERT INTO Card(user_id,size_id,name,age,gender,body_shape,prefer_color,prefer_style,prefer_size)' +
+            ' VALUES(?,?,?,?,?,?,?,?,?)',
+            [user_id,size_id,name,age,gender,body_shape,prefer_color,prefer_style,prefer_size],
             (err, result) => {
                 if (err) {
                     conn.rollback();
