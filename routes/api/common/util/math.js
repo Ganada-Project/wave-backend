@@ -36,7 +36,7 @@ const conn = mysql.createConnection(config);
 //   ],
 
 function Euclidean(Point1, Point2) {
-    return Math.sqrt((Point1.y-Point2.y)**2 + (Point1.x-Point2.y)**2)    
+    return Math.sqrt((Point1.x-Point2.x)**2 + (Point1.y-Point2.y)**2)
 }
 // shoulder,chest,arm,waist,height,hip,crotch,thigh,leg
 exports.measureSize = (height, body_points) => {
