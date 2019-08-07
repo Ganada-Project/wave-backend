@@ -40,17 +40,16 @@ function Euclidean(Point1, Point2) {
 }
 // shoulder,chest,arm,waist,height,hip,crotch,thigh,leg
 exports.measureSize = (height, body_points) => {
-    console.log(body_points)
-    height_ratio = height / (body_points.head.y -  body_points.foot.y)
-    shoulder = Math.abs((body_points.leftShoulder.x - body_points.rightShoulder.x)*height_ratio)
-    chest = Math.abs((body_points.leftChest.x - body_points.rightChest.x)*height_ratio)
-    arm = Euclidean(body_points.rightShoulder, body_points.rightElbow) + Euclidean(body_points.rightElbow, body_points.rightHand)
-    waist = Math.abs(body_points.leftWaist.x - body_points.rightWaist.x)
-    hip = Math.abs(body_points.leftPelvis.x - body_points.rightPelvis.x)
-    crotch = Math.abs(body_points.leftPelvis.y - body_points.leftThigh.y)
-    thigh = Math.abs((body_points.leftThigh.x - body_points.rightThigh.x)/2)
-    leg = Euclidean(body_points.leftThigh, body_points.leftAnkle)
-    
+    height_ratio = height / (body_points.foot.y-body_points.head.y)
+    shoulder = (Math.abs((body_points.leftShoulder.x - body_points.rightShoulder.x)))*height_ratio
+    chest = (Math.abs((body_points.leftChest.x - body_points.rightChest.x)))*height_ratio
+    arm = (Euclidean(body_points.rightShoulder, body_points.rightElbow) + Euclidean(body_points.rightElbow, body_points.rightHand))*height_ratio
+    waist = (Math.abs(body_points.leftWaist.x - body_points.rightWaist.x))*height_ratio
+    hip = (Math.abs(body_points.leftPelvis.x - body_points.rightPelvis.x))*height_ratio
+    crotch = (Math.abs(body_points.leftPelvis.y - body_points.leftThigh.y))*height_ratio
+    thigh = (Math.abs((body_points.leftThigh.x - body_points.rightThigh.x)/2))*height_ratio
+    leg = (Euclidean(body_points.leftThigh, body_points.leftAnkle))*height_ratio
+
     measure = {
         shoulder,
         chest,
@@ -61,6 +60,6 @@ exports.measureSize = (height, body_points) => {
         thigh,
         leg
     }
-
+    console.log(measure)
     return measure
 }
