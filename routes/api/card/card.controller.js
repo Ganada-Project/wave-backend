@@ -29,3 +29,5 @@ exports.createCard = async (req, res) => {
     });
 
 };
+
+exports.getCards
