@@ -81,3 +81,25 @@ exports.getSizeByCardId = async(req, res) => {
         }
     });
 }
+
+// exports.UpdateSize = async(req, res) => {
+//     const conn = mysql.createConnection(config);
+//     conn.beginTransaction(async(err) => {
+//         if (err) return res.status(400).json({err});
+//         try {
+//             const cards = await query.card.getCardByCardId(conn, card_id);
+//             card = cards[0];
+//             const size_id = card.size_id;
+//             const sizes = await query.size.getSizeBySizeId(conn, size_id);
+//             const size = sizes[0];
+//             conn.commit();
+//             conn.end();
+//             return res.status(200).json({
+//                 size
+//             });
+//         }   catch (err) {
+//             conn.end();
+//             return res.status(400).json(err.message);
+//         }
+//     });
+// }

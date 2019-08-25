@@ -31,3 +31,19 @@ exports.getSizeBySizeId = (conn,size_id) => {
             });
     });
 }
+
+exports.updateSize = (conn,id,shoulder,chest,arm,waist,weight,height,hip,crotch,thigh,leg) => {
+    return new Promise((resolve, reject) => {
+        conn.query('UPDATE Size' +
+            'SET shoulder = ?, chest = ?, arm = ?, waist = ?, weight = ?, height = ?, hip = ?, crotch = ?, thigh = ?, leg = ?' +
+            'WHERE id = ?',
+            [shoulder,chest,arm,waist,weight,height,hip,crotch,thigh,leg,id],
+            (err, result) => {
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
+                else resolve(result)
+            });
+    });
+}
