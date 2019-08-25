@@ -17,10 +17,13 @@ exports.createCard = async (req, res) => {
             const size_id = result.insertId;
             const user_id = req.decoded._id;
             await query.card.createCard(conn,user_id,size_id,name,age,gender,bodyShape,height,weight,preferColor,preferStyle,preferSize);
+            conn.commit();
+            conn.end();
             return res.status(200).json({
                 message: "success"
             })
         } catch (err) {
+            conn.end();
             return res.status(400).json(err.message);
         }
     });
