@@ -1,6 +1,7 @@
 const query = require("../common/query");
 const mysql = require('mysql');
 const config = require('../../../config');
+const _ = require('lodash');
 exports.createCard = async (req, res) => {
 
     const conn = mysql.createConnection(config);
@@ -37,6 +38,14 @@ exports.getMyCards = async (req, res) => {
         if (err) return res.status(400).json({err});
         try {
             const cards = await query.card.getCardByUserId(conn, user_id);
+            _.forEach(cards, function(card, i) {
+                delete card.user_id;
+                delete card.size_id;
+                delete card.prefer_color;
+                delete card.prefer_style;
+                delete card.prefer_size;
+            });
+
             conn.commit();
             conn.end();
             return res.status(200).json({
@@ -48,4 +57,27 @@ exports.getMyCards = async (req, res) => {
         }
     });
 
+};
+
+exports.getSizeByCardId = async(req, res) => {
+    const conn = mysql.createConnection(config);
+    const card_id = req.query.card;
+    conn.beginTransaction(async(err) => {
+        if (err) return res.status(400).json({err});
+        try {
+            const cards = await query.card.getCardByCardId(conn, card_id);
+            card = cards[0];
+            const size_id = card.size_id;
+            const sizes = await query.size.getSizeBySizeId(conn, size_id);
+            const size = sizes[0];
+            conn.commit();
+            conn.end();
+            return res.status(200).json({
+                size
+            });
+        }   catch (err) {
+            conn.end();
+            return res.status(400).json(err.message);
+        }
+    });
 }

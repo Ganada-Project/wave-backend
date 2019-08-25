@@ -37,3 +37,17 @@ exports.getCardByUserId = (conn, user_id) => {
             });
     });
 }
+
+exports.getCardByCardId = (conn, card_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Card WHERE id = ?',
+            [card_id],
+            (err, result) => {
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
+                else resolve(result)
+            });
+    });
+}

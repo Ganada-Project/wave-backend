@@ -17,3 +17,17 @@ exports.createSize= (conn,shoulder,chest,arm,waist,weight,height,hip,crotch,thig
             });
     });
 }
+
+exports.getSizeBySizeId = (conn,size_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Size WHERE id = ?',
+            [size_id],
+            (err, result) => {
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
+                else resolve(result)
+            });
+    });
+}
