@@ -48,7 +48,7 @@ exports.measureSize = (height, body_points) => {
     hip = (Math.abs(body_points.leftPelvis.x - body_points.rightPelvis.x))*height_ratio
     crotch = (Math.abs(body_points.leftPelvis.y - body_points.leftThigh.y))*height_ratio
     thigh = (Math.abs((body_points.leftThigh.x - body_points.rightThigh.x)/2))*height_ratio
-    leg = (Euclidean(body_points.leftThigh, body_points.leftAnkle))*height_ratio
+    leg = (Euclidean(body_points.leftPelvis, body_points.leftAnkle))*height_ratio
 
     measure = {
         shoulder,
