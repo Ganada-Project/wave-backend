@@ -177,7 +177,8 @@ exports.login = (req, res) => {
                     jwt.sign(
                         {
                             _id: result[0].id,
-                            phone: result[0].phone
+                            phone: result[0].phone,
+                            is_manager: is_manager
                         },
                         secret,
                         {
@@ -207,7 +208,8 @@ exports.login = (req, res) => {
                     jwt.sign(
                         {
                             _id: result[0].id,
-                            phone: result[0].phone
+                            phone: result[0].phone,
+                            is_manager: 0
                         },
                         secret,
                         {

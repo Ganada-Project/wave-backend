@@ -12,10 +12,10 @@ exports.getMeasurePreset = () => {
     });
 }
 
-exports.createItem = (conn, brand_id, sex, category_id, style_id, feature_id,name,price,season) => {
+exports.createItem = (conn, ) => {
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO Item(brand_id, sex, category_id, style_id, feature_id,name,price,season_id) VALUES(?,?,?,?,?,?,?,?)',
-            [brand_id, sex, category_id, style_id, feature_id,name, price,season],
+        conn.query('INSERT INTO Item() VALUES()',
+            [],
             (err, result) => {
                 if (err) {
                     conn.rollback();
