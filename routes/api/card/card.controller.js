@@ -30,4 +30,22 @@ exports.createCard = async (req, res) => {
 
 };
 
-exports.getCards
+exports.getMyCards = async (req, res) => {
+    const conn = mysql.createConnection(config);
+    const user_id = req.decoded._id;
+    conn.beginTransaction(async(err) => {
+        if (err) return res.status(400).json({err});
+        try {
+            const cards = await query.card.getCardByUserId(conn, user_id);
+            conn.commit();
+            conn.end();
+            return res.status(200).json({
+                cards
+            });
+        }   catch (err) {
+                conn.end();
+                return res.status(400).json(err.message);
+        }
+    });
+
+}

@@ -23,3 +23,17 @@ exports.createCard = (conn,user_id,size_id,name,age,gender,body_shape,prefer_col
             });
     });
 }
+
+exports.getCardByUserId = (conn, user_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Card WHERE user_id = ?',
+            [user_id],
+            (err, result) => {
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
+                else resolve(result)
+            });
+    });
+}
