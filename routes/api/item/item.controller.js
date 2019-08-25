@@ -11,7 +11,7 @@ exports.createItem = async (req, res) => {
         color,
         main_img,
         other_imgs,
-        transparent_img,
+        outlined_img,
         style,
         price,
         maker,
@@ -20,4 +20,20 @@ exports.createItem = async (req, res) => {
         sizes
     } = req.body;
 
+    return res.status(200).json({
+        name,
+        url,
+        gender,
+        category,
+        color,
+        main_img,
+        other_imgs,
+        outlined_img,
+        style,
+        price,
+        maker,
+        material,
+        madein,
+        sizes
+    })
 };
