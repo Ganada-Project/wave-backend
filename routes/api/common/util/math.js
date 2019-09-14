@@ -60,6 +60,5 @@ exports.measureSize = (height, body_points) => {
         thigh,
         leg
     }
-    console.log(measure)
     return measure
 }
