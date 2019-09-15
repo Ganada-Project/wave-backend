@@ -105,3 +105,45 @@ exports.toggleOffSale = (item_id) => {
         )
     })
 }
+
+exports.createItem = (
+    name,
+    url,
+    gender,
+    category,
+    color,
+    main_img,
+    other_imgs,
+    outlined_img,
+    style,
+    price,
+    maker,
+    material,
+    madein
+    ) => {
+        return new Promise((resolve, reject) => {
+            conn.query(
+                "INSERT INTO Item VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                [
+                    name,
+                    url,
+                    gender,
+                    category,
+                    color,
+                    main_img,
+                    other_imgs,
+                    outlined_img,
+                    style,
+                    price,
+                    maker,
+                    material,
+                    madein
+                ],
+                (err, result) => {
+                    if (err) reject(err);
+                    else resolve(result);
+                }
+            )
+        })
+    
+}
