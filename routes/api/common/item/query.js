@@ -106,6 +106,19 @@ exports.toggleOffSale = (item_id) => {
     })
 }
 
+exports.getAllItem = (conn) => {
+    return new Promise((resolve, reject) => {
+        conn.query(
+            "SELECT * FROM Item",
+            (err, result) => {
+                
+                if (err) reject(err);
+                else resolve(result);
+            }
+        )
+    })
+}
+
 exports.createItem = (
     name,
     url,
