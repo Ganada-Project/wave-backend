@@ -10,17 +10,11 @@ const conn = mysql.createConnection(config);
 
 
 exports.createCard = (conn,user_id,size_id,name,age,gender,body_shape,prefer_color,prefer_style,prefer_size,mine,card_color) => {
-    console.log("__")
-    console.log(prefer_color)
-    console.log(prefer_style)
-    console.log(prefer_size)
-    console.log(mine)
-    console.log(card_color)
-    console.log("__")
+    const created_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
     return new Promise((resolve, reject) => {
-        conn.query('INSERT INTO Card(user_id,size_id,name,age,gender,body_shape,prefer_color,prefer_style,prefer_size,mine,card_color)' +
-            ' VALUES(?,?,?,?,?,?,?,?,?,?,?)',
-            [user_id,size_id,name,age,gender,body_shape,prefer_color,prefer_style,prefer_size,mine,card_color],
+        conn.query('INSERT INTO Card(user_id,size_id,name,age,gender,body_shape,prefer_color,prefer_style,prefer_size,mine,card_color,created_at)' +
+            ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',
+            [user_id,size_id,name,age,gender,body_shape,prefer_color,prefer_style,prefer_size,mine,card_color,created_at],
             (err, result) => {
                 if (err) {
                     conn.rollback();
@@ -34,6 +28,20 @@ exports.createCard = (conn,user_id,size_id,name,age,gender,body_shape,prefer_col
 exports.getCardByUserId = (conn, user_id) => {
     return new Promise((resolve, reject) => {
         conn.query('SELECT * FROM Card WHERE user_id = ?',
+            [user_id],
+            (err, result) => {
+                if (err) {
+                    conn.rollback();
+                    reject(err);
+                }
+                else resolve(result)
+            });
+    });
+}
+
+exports.getCardByUserIdSorted = (conn, user_id) => {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM Card WHERE user_id = ? ORDER BY created_at DESC;',
             [user_id],
             (err, result) => {
                 if (err) {
