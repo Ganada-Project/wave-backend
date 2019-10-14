@@ -50,6 +50,8 @@ exports.createItem = async (req, res) => {
             madein
         )
 
+        conn.commit();
+        conn.close();
         return res.status(200).json({
             message: 'item create success'
         });
@@ -80,7 +82,7 @@ exports.getAllItem = async(req, res) => {
                 })
                 item.material = material_list;
             });
-            
+            conn.close();
             return res.status(200).json({
                 result
             });
