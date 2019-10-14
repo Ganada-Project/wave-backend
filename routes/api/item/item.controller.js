@@ -91,3 +91,54 @@ exports.getAllItem = async(req, res) => {
         }
     });
 };
+
+exports.getAllItemGender = async(req, res) => {
+    const conn = mysql.createConnection(config);
+    conn.beginTransaction(async(err) => {
+        try {
+            let gender = req.query.gender;
+            if (gender == "m"){
+                gender = '남'
+            }
+            if (gender == "w"){
+                gender = '여'
+            }
+            let result = await query.item.getAllItem(conn);
+
+
+            _.forEach(result, function(item, i) {
+                item.other_imgs = item.other_imgs.split(" ");
+                materials = item.material.split(" ");
+                material_list = []
+                _.forEach(materials, function(material,i) {
+                    name = material.split(":")[0];
+                    value = material.split(":")[1];
+                    m = new Object();
+                    m.name = name;
+                    m.value = value
+                    material_list.push(m);
+                })
+                item.material = material_list;
+            });
+            let filtered;
+            if(gender !== "all"){
+
+                filtered = result.filter(function(item, index, arr){
+                    console.log(item.gender)
+                    return item.gender === gender;
+                });
+
+            }
+            else{
+               filtered = result
+            }
+            conn.end();
+            return res.status(200).json({
+                filtered
+            });
+        } catch (err) {
+            console.log(err)
+            return res.status(400).json(err.message);
+        }
+    });
+};
