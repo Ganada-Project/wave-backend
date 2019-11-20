@@ -142,3 +142,20 @@ exports.getAllItemGender = async(req, res) => {
         }
     });
 };
+
+exports.getItemByName = async(req, res) => {
+    const conn = mysql.createConnection(config);
+    conn.beginTransaction(async(err) => {
+        try {
+            let result = await query.item.getItemByName(conn, req.query.name);
+
+            conn.end();
+            return res.status(200).json({
+                result
+            });
+        } catch (err) {
+            console.log(err)
+            return res.status(400).json(err.message);
+        }
+    });
+}

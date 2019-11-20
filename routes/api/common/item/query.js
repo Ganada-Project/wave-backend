@@ -35,6 +35,16 @@ exports.getItemById = (id) => {
     });
 }
 
+exports.getItemByName = (conn, name) => {
+    return new Promise((resolve, reject) => {
+        // console.log(name)
+        conn.query(`SELECT * FROM Item WHERE name LIKE '%${name}%'`, (err, result) => {
+            if (err) reject(err);
+            else resolve(result)
+        });
+    });
+}
+
 exports.saveItemImage = (conn, item_id, img_url) =>{
     return new Promise((resolve, reject) => {
         conn.query(
